@@ -1,5 +1,6 @@
 return {
 	"stevearc/conform.nvim",
+  event="VeryLazy",
 	config = function()
 		require("conform").setup({
 			formatters_by_ft = {
@@ -8,6 +9,7 @@ return {
 				python = { "isort", "black" },
 				-- Use a sub-list to run only the first available formatter
 				javascript = { { "prettierd", "prettier" } },
+        cpp = { "clang-format" }
 			},
 		})
 

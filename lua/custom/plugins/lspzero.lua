@@ -48,13 +48,31 @@ return {
 			-- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
 			require("mason").setup({})
 			require("mason-lspconfig").setup({
-				ensure_installed = {},
+				ensure_installed = {
+					"lua_ls",
+					"pyright",
+					"ruff_lsp",
+          "clangd"
+				},
 				handlers = {
 					lsp_zero.default_setup,
 				},
 			})
+      require('lspconfig').clangd.setup({})
 		end,
 	},
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    config = function ()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "black",
+          "prettier",
+          "clang-format"
+        }
+      })
+    end
+  },
 	{ "neovim/nvim-lspconfig" },
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{

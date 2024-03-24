@@ -9,7 +9,8 @@ return {
 			local lsp_zero = require("lsp-zero")
 			lsp_zero.extend_lspconfig()
 
-			lsp_zero.on_attach(function(client, bufnr)
+			-- lsp_zero.on_attach(function(client, bufnr)
+			lsp_zero.on_attach(function(_, bufnr)
 				-- see :help lsp-zero-keybindings
 				-- to learn the available actions
 				lsp_zero.default_keymaps({ buffer = bufnr })
@@ -30,8 +31,52 @@ return {
 							end,
 							"Code actions",
 						},
+						d = {
+							function()
+								vim.diagnostic.open_float()
+							end,
+							"Show floating diagnostics",
+						},
 					},
 				}, { prefix = "<leader>", buffer = bufnr })
+        wk.register({
+          d = {
+            function ()
+              vim.lsp.buf.definition()
+            end,
+            "Go to definition"
+          },
+          D = {
+            function ()
+              vim.lsp.buf.declaration()
+            end,
+            "Go to declaration"
+          },
+          i = {
+            function ()
+              vim.lsp.buf.implementation()
+            end,
+            "List all implementations"
+          },
+          o = {
+            function ()
+              vim.lsp.buf.type_definition()
+            end,
+            "Jump to type definition"
+          },
+          r = {
+            function ()
+              vim.lsp.buf.references()
+            end,
+            "List all references"
+          },
+          s = {
+            function ()
+              vim.lsp.buf.signature_help()
+            end,
+            "Display signature info"
+          },
+        }, {prefix="g"})
 			end)
 
 			lsp_zero.set_sign_icons({
@@ -52,7 +97,8 @@ return {
 					"lua_ls",
 					"pyright",
 					"ruff_lsp",
-          "clangd"
+          "clangd",
+          "tsserver"
 				},
 				handlers = {
 					lsp_zero.default_setup,

@@ -17,6 +17,8 @@ return {
 				"toml",
 				"rst",
 				"ninja",
+        "javascript",
+        "typescript",
 			},
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)

@@ -9,6 +9,9 @@ return {
 			local lsp_zero = require("lsp-zero")
 			lsp_zero.extend_lspconfig()
 
+      -- Add additional capabilities supported by nvim-cmp
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 			-- lsp_zero.on_attach(function(client, bufnr)
 			lsp_zero.on_attach(function(_, bufnr)
 				-- see :help lsp-zero-keybindings
@@ -104,7 +107,15 @@ return {
 					lsp_zero.default_setup,
 				},
 			})
-      require('lspconfig').clangd.setup({})
+      --#INFO: server setups 
+      require('lspconfig').clangd.setup({
+        on_attach = lsp_zero.on_attach,
+        capabilities = capabilities
+      })
+      require('lspconfig').lua_ls.setup({
+        on_attach = lsp_zero.on_attach,
+        capabilities = capabilities
+      })
 		end,
 	},
   {

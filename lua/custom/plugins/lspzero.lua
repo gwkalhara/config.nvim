@@ -101,7 +101,8 @@ return {
 					"pyright",
 					"ruff_lsp",
           "clangd",
-          "tsserver"
+          "tsserver",
+          "rust_analyzer"
 				},
 				handlers = {
 					lsp_zero.default_setup,
@@ -116,6 +117,20 @@ return {
         on_attach = lsp_zero.on_attach,
         capabilities = capabilities
       })
+      -- INFO: disabled to work with rust-tools plugin
+      -- require("lspconfig").rust_analyzer.setup({
+      --   on_attach = lsp_zero.on_attach,
+      --   capabilities = capabilities,
+      --   filetypes = {"rust"},
+      --   root_dir = require("lspconfig.util").root_pattern("Cargo.toml"),
+      --   settings = {
+      --     ["rust-analyzer"] = {
+      --       cargo = {
+      --         allFeatures = true,
+      --       },
+      --     },
+      --   },
+      -- })
 		end,
 	},
   {

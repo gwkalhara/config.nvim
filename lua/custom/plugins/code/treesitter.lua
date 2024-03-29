@@ -19,6 +19,8 @@ return {
 				"ninja",
         "javascript",
         "typescript",
+        "regex",
+        "markdown",
 			},
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)

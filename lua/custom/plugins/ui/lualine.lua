@@ -34,10 +34,10 @@ return {
 						cond = require("lazy.status").has_updates,
 						color = { fg = "#ff9e64" },
 					},
-					-- {
-					-- require("noice").api.status.message.get_hl,
-					-- cond = require("noice").api.status.message.has,
-					-- },
+					{
+					require("noice").api.status.message.get_hl,
+					cond = require("noice").api.status.message.has,
+					},
 					{
 						require("venv-selector").get_active_venv,
 						cond = function()

@@ -184,4 +184,14 @@ local opts = {
 		require = false,
 	},
 }
-require("lazy").setup({ import = "custom.plugins" }, opts)
+--require("lazy").setup({}, opts)
+require("lazy").setup(
+  {
+    {import = "custom.plugins.ui"},
+    {import = "custom.plugins.util"},
+    {import = "custom.plugins.code"},
+    {import = "custom.plugins.lsp"},
+    {import = "custom.plugins" },
+  }
+  , opts)
+

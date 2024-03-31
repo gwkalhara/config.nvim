@@ -15,7 +15,7 @@ return {
           "ruff_lsp",
           "clangd",
           "tsserver",
-          "rust_analyzer"
+          "spectral",
         }
       })
       require("mason-tool-installer").setup({
@@ -133,6 +133,7 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local lspconfig = require("lspconfig")
 
+      -- INFO: start language server setup
       lspconfig.lua_ls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
@@ -144,6 +145,11 @@ return {
       lspconfig.pyright.setup({
         on_attach = on_attach,
         capabilities = capabilities,
+      })
+      lspconfig.spectral.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = { "json", "yaml" }
       })
     end
   },

@@ -191,6 +191,7 @@ require("lazy").setup(
     {import = "custom.plugins.util"},
     {import = "custom.plugins.code"},
     {import = "custom.plugins.lsp"},
+    {import = "custom.plugins.lang"},
     {import = "custom.plugins" },
   }
   , opts)

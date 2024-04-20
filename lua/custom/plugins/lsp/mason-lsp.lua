@@ -16,6 +16,7 @@ return {
           "clangd",
           "tsserver",
           "spectral",
+          "gopls",
         }
       })
       require("mason-tool-installer").setup({
@@ -23,7 +24,11 @@ return {
         -- INFO: additional tooling
           "black",
           "prettier",
-          "clang-format"
+          "clang-format",
+          "gofumpt",
+          -- "goimports_reviser",
+          "golines",
+          -- "delve", -- go debugger
         }
       })
 
@@ -150,6 +155,22 @@ return {
         on_attach = on_attach,
         capabilities = capabilities,
         filetypes = { "json", "yaml" }
+      })
+      lspconfig.gopls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        cmd = {"gopls"},
+        filetypes = { "go", "gomod", "gowork", "gotmpl"},
+        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+            }
+          }
+        }
       })
     end
   },

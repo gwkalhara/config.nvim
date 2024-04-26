@@ -4,12 +4,21 @@ return {
 -- Plug 'hrsh7th/cmp-cmdline'
   {
     "hrsh7th/nvim-cmp",
+    dependencies = { "onsails/lspkind.nvim" },
     config = function()
       local cmp = require("cmp")
 
       require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
+        formatting = {
+          format = require('lspkind').cmp_format({
+              mode = "symbol",
+              maxwidth = 50,
+              ellipsis_char = '...',
+              symbol_map = { Codeium = "", }
+          })
+        },
         snippet = {
               -- REQUIRED - you must specify a snippet engine
               expand = function(args)
@@ -27,6 +36,7 @@ return {
           ['<tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
+          { name = "codeium" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },

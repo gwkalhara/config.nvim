@@ -135,6 +135,8 @@ return {
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
 
+      --#INFO: LSP setup with neodev
+      require("neodev").setup({})
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local lspconfig = require("lspconfig")
 
@@ -142,6 +144,13 @@ return {
       lspconfig.lua_ls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace"
+            }
+          }
+        }
       })
       lspconfig.ruff_lsp.setup({
         on_attach = on_attach,

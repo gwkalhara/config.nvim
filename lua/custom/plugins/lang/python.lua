@@ -10,6 +10,8 @@ return {
         ".env",
     }
 	},
+  --#NOTE: used for the new version(2024)
+  branch = "regexp", -- This is the regexp branch, use this for the new version
 	ft = "python",
 	keys = {
 		-- Keymap to open VenvSelector to pick a venv.

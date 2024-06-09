@@ -12,7 +12,7 @@ return {
         ensure_installed = {
           "lua_ls",
           "pyright",
-          "ruff_lsp",
+          -- "ruff_lsp",
           "clangd",
           "tsserver",
           "spectral",
@@ -22,7 +22,7 @@ return {
       require("mason-tool-installer").setup({
         ensure_installed = {
         -- INFO: additional tooling
-          "black",
+          -- "black",
           "prettier",
           "clang-format",
           "gofumpt",

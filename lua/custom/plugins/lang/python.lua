@@ -18,6 +18,7 @@ return {
 		{ "<leader>cvs", "<cmd>VenvSelect<cr>" },
 		-- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
 		{ "<leader>cvc", "<cmd>VenvSelectCached<cr>" },
+		{ "<leader>cvp", function () print(require("venv-selector").venv()) end},
 	},
 	config = function()
 		require("venv-selector").setup({})
@@ -27,6 +28,7 @@ return {
 				name = "venv",
 				s = "Select venv",
 				c = "Select venv from cache",
+				p = "Print selected venv",
 			},
 		}, { prefix = "<leader>c" })
 	end,

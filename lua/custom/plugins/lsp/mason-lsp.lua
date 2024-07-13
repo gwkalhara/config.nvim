@@ -23,6 +23,7 @@ return {
         ensure_installed = {
         -- INFO: additional tooling
           "black",
+          "isort",
           "prettier",
           "clang-format",
           "gofumpt",

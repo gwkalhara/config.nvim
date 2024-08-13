@@ -166,6 +166,14 @@ return {
         capabilities = capabilities,
         filetypes = { "json", "yaml" }
       })
+      lspconfig.ast_grep.setup({
+        on_attach = on_attach,
+        capabilities = capabilities
+      })
+      lspconfig.cssls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities
+      })
       lspconfig.gopls.setup({
         on_attach = on_attach,
         capabilities = capabilities,

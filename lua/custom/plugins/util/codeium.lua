@@ -1,12 +1,28 @@
 return {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/nvim-cmp",
-    },
-    config = function()
-        require("codeium").setup({
-          enable_chat = true
-        })
-    end
+  -- "monkoose/neocodeium",
+  "gamithaKalharaW/neocodeium.clone",
+  event = "VeryLazy",
+  config = function()
+    local neocodeium = require("neocodeium")
+    neocodeium.setup({})
+
+    vim.keymap.set("i", "<Tab>", function()
+        neocodeium.accept()
+    end)
+    vim.keymap.set("i", "<A-w>", function()
+        neocodeium.accept_word()
+    end)
+    vim.keymap.set("i", "<A-a>", function()
+        neocodeium.accept_line()
+    end)
+    vim.keymap.set("i", "<A-e>", function()
+        neocodeium.cycle_or_complete()
+    end)
+    vim.keymap.set("i", "<A-r>", function()
+        neocodeium.cycle_or_complete(-1)
+    end)
+    vim.keymap.set("i", "<A-BS>", function()
+        neocodeium.clear()
+    end)
+  end,
 }

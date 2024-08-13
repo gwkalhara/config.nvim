@@ -8,16 +8,25 @@ return {
     config = function()
       local cmp = require("cmp")
 
+      -- configure to work properly with neocodeium
+      -- INFO: @https://github.com/monkoose/neocodeium
+      local neocodeium = require("neocodeium")
+      local commands = require("neocodeium.commands")
+
+      cmp.event:on("menu_opened", function()
+        commands.disable()
+        neocodeium.clear()
+      end)
+      cmp.event:on("menu_closed", function()
+          commands.enable()
+      end)
+
+
       require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
-        formatting = {
-          format = require('lspkind').cmp_format({
-              mode = "symbol",
-              maxwidth = 50,
-              ellipsis_char = '...',
-              symbol_map = { Codeium = "", }
-          })
+        completion = {
+          autocomplete = false
         },
         snippet = {
               -- REQUIRED - you must specify a snippet engine
@@ -36,7 +45,6 @@ return {
           ['<tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
-          { name = "codeium" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "buffer" },

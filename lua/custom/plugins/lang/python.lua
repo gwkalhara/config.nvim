@@ -22,13 +22,11 @@ return {
       }
     })
 		local wk = require("which-key")
-		wk.register({
-			v = {
-				name = "venv",
-				s = "Select venv",
-				c = "Select venv from cache",
-				p = "Print selected venv",
-			},
-		}, { prefix = "<leader>c" })
+    wk.add({
+      {"<leader>cv", group = "venv"},
+      {"<leader>cvs", "<cmd>VenvSelect<cr>", desc = "Select venv"},
+      {"<leader>cvc", "<cmd>VenvSelectCached<cr>", desc = "Select venv from cache"},
+      {"<leader>cvp", function () print(require("venv-selector").venv()) end, desc = "Print selected venv"},
+    })
 	end,
 }

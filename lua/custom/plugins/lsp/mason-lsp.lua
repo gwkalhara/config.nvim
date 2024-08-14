@@ -121,11 +121,6 @@ return {
               end,
               "Remove folder"
             },
-            -- l = {
-            --   function()
-            --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            --   end
-            -- },
           }
         }, { prefix = "<leader>" })
       end

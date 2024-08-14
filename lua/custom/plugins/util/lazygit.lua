@@ -1,12 +1,5 @@
 return {
   "kdheepak/lazygit.nvim",
-  --cmd = {
-    --"LazyGit",
-    --"LazyGitConfig",
-    --"LazyGitCurrentFile",
-    --"LazyGitFilter",
-    --"LazyGitFilterCurrentFile",
-  --},
   event = "VeryLazy",
   keys = { "<leader>g"},
   -- optional for floating window border decoration
@@ -15,11 +8,9 @@ return {
   },
   config = function()
     local wk = require("which-key")
-    wk.register({
-      g = {
-        name = "Git",
-        g = { "<cmd>LazyGit<cr>", "LazyGit"}
-      },
-    }, { prefix = "<leader>"})
+    wk.add({
+      { "<leader>g", group = "Git" },
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    })
   end
 }

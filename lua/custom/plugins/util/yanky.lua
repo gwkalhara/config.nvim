@@ -3,16 +3,13 @@ return {
 	config = function()
 		require("yanky").setup()
 		local wk = require("which-key")
-		wk.register({
-			p = { "<Plug>(YankyPutAfter)", "Paste after" },
-			P = { "<Plug>(YankyPutBefore)", "Paste before" },
-		}, {})
-		wk.register({
-			p = {
-				name = "Put",
-				p = { "<Plug>(YankyPreviousEntry)", "YankyPreviousEntry" },
-				n = { "<Plug>(YankyNextEntry)", "YankyNextEntry" },
-			},
-		}, { prefix = "<leader>" })
+
+    wk.add({
+      {"p", "<Plug>(YankyPutAfter)", desc = "Paste after"},
+      {"P", "<Plug>(YankyPutBefore)", desc = "Paste before"},
+      {"<leader>p", group = "Put"},
+      {"<leader>pp", "<Plug>(YankyPreviousEntry)", desc = "YankyPreviousEntry" },
+      {"<leader>pn", "<Plug>(YankyNextEntry)", desc = "YankyNextEntry" }
+    })
 	end,
 }

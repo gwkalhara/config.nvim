@@ -5,49 +5,15 @@ return {
 	config = function()
 		require("trouble").setup()
 		local wk = require("which-key")
-		wk.register({
-			x = {
-				name = "Trouble",
-				x = {
-					function()
-						require("trouble").toggle()
-					end,
-					"Toggle Trouble",
-				},
-				w = {
-					function()
-						require("trouble").toggle("workspace_diagnostics")
-					end,
-					"Toggle workspace diagnostics",
-				},
-				d = {
-					function()
-						require("trouble").toggle("document_diagnostics")
-					end,
-					"Toggle document diagnostics",
-				},
-				q = {
-					function()
-						require("trouble").toggle("quickfix")
-					end,
-					"Toggle quickfixes",
-				},
-				l = {
-					function()
-						require("trouble").toggle("loclist")
-					end,
-					"Toggle loclist",
-				},
-			},
-		}, { prefix = "<leader>" })
-		wk.register({
-			g = {
-				function()
-					require("trouble").toggle("lsp_references")
-				end,
-				"LSP reference",
-			},
-		}, { prefix = "<leader>" })
+
+    wk.add({
+      { "<leader>x", group = "Trouble" },
+      { "<leader>xx", "<cmd>Trouble<cr>", desc = "Toggle Trouble", noremap = false },
+      { "<leader>xd", "<cmd>Trouble diagnostics<cr>", desc = "Toggle document diagnostics", noremap = false },
+      { "<leader>xq", "<cmd>Trouble quickfix<cr>", desc = "Toggle quickfixes", noremap = false },
+      { "<leader>xl", "<cmd>Trouble loclist<cr>", desc = "Toggle loclist", noremap = false },
+      { "gR", "<cmd>Trouble lsp_references<cr>", desc = "LSP reference", noremap = false }
+    })
 	end,
 }
 -- Lua

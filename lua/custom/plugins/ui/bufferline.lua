@@ -50,10 +50,20 @@ return {
 				end,
 			})
 			local wk = require("which-key")
-			wk.register({ b = {
-				name = "Buffer",
-				m = { name = "move" },
-			} }, { prefix = "<leader>" })
+      wk.add({
+        { "<leader>b", group = "Buffer" },
+        { "<leader>bb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
+        { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+        { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+        { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
+        { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
+        { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
+        { "<leader>bml", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer to left" },
+        { "<leader>bmr", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer to right" },
+        { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+        { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+
+      })
 		end,
 	},
 	{

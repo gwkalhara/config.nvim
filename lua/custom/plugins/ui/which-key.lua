@@ -15,18 +15,14 @@ return {
 		local wk = require("which-key")
 		wk.setup()
 
-		wk.register({
-			l = {
-				name = "Lazy",
-				l = { "<cmd>Lazy<cr>", "Open Lazy", noremap = false },
-				s = { "<cmd>Lazy sync<cr>", "Run Lazy sync", noremap = false },
-			},
-			q = {
-				name = "Quit",
-				q = { "<cmd>qa<cr>", "Quite all" },
-				s = { "<cmd>wqa<cr>", "Write quite all" },
-				x = { "<cmd>qa!<cr>", "Quite without saving" },
-			},
-		}, { prefix = "<leader>" })
-	end,
+    wk.add({
+      { "<leader>l", group = "Lazy" },
+      { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy", noremap = false },
+      { "<leader>ls", "<cmd>Lazy sync<cr>", desc = "Run Lazy sync", noremap = false },
+      { "<leader>q", group = "Quit" },
+      { "<leader>qq", "<cmd>qa<cr>", desc = "Quite all", noremap = false },
+      { "<leader>qs", "<cmd>wqa<cr>", desc = "Write quite all", noremap = false },
+      { "<leader>qx", "<cmd>qa!<cr>", desc = "Quite without saving", noremap = false }
+    })
+	end
 }

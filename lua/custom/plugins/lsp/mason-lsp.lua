@@ -50,79 +50,30 @@ return {
         -- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
         -- -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
         local wk = require("which-key")
-        wk.register({K = {
-          function()
-            vim.lsp.buf.hover()
-          end,
-          "Hover documentation"
-        }}, {buffer = bufnr})
+        wk.add({
+          { "K", function() vim.lsp.buf.hover() end, buffer = bufnr, desc = "Hover documentation" },
+        })
 
-        wk.register({
-          c = {
-            name = "Code",
-            r = {
-              function()
-                vim.lsp.buf.rename()
-              end,
-              "Rename",
-            },
-            a = {
-              function()
-                vim.lsp.buf.code_action()
-              end,
-              "Code actions",
-            },
-            d = {
-              function()
-                vim.diagnostic.open_float()
-              end,
-              "Show floating diagnostics",
-            },
-          },
-        }, { prefix = "<leader>" })
-        wk.register({
-          D = {
-            function()
-              vim.lsp.buf.declaration()
-            end,
-            "Goto declararion"
-          },
-          d = {
-            function()
-              vim.lsp.buf.definition()
-            end,
-            "Goto definition"
-          },
-          i = {
-            function()
-              vim.lsp.buf.implementation()
-            end,
-            "Goto implementation"
-          },
-          r = {
-            function()
-              vim.lsp.buf.references()
-            end,
-            "Goto references"
-          },
-        }, { prefix = "g" })
-        wk.register({
-          w = {
-            name = "Workspace",
-            a = {
-              function()
-                vim.lsp.buf.add_workspace_folder()
-              end,
-              "Add folder"
-            },
-            r = {
-              function()
-                vim.lsp.buf.remove_workspace_folder()
-              end,
-              "Remove folder"
-            },
-          }
-        }, { prefix = "<leader>" })
+        wk.add ({
+          { "<leader>c", group = "Code" },
+          { "<leader>ca", function() vim.lsp.buf.code_action() end, desc = "Code actions" },
+          { "<leader>cd", function() vim.diagnostic.open_float() end, desc = "Show floating diagnostics" },
+          { "<leader>cr", function() vim.lsp.buf.rename() end, desc = "Rename" },
+        })
+
+        wk.add({
+          { "gD", function() vim.lsp.buf.declaration() end, desc = "Goto declararion" },
+          { "gd", function() vim.lsp.buf.definition() end, desc = "Goto definition" },
+          { "gi", function() vim.lsp.buf.implementation() end, desc = "Goto implementation" },
+          { "gr", function() vim.lsp.buf.references() end, desc = "Goto references" },
+        })
+
+        wk.add({
+          { "<leader>w", group = "Workspace" },
+          { "<leader>wa", function() vim.lsp.buf.add_workspace_folder() end, desc = "Add folder" },
+          { "<leader>wr", function() vim.lsp.buf.remove_workspace_folder() end, desc = "Remove folder" },
+        })
+
       end
 
       local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }

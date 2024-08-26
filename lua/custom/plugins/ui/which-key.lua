@@ -19,10 +19,8 @@ return {
       { "<leader>l", group = "Lazy" },
       { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy", noremap = false },
       { "<leader>ls", "<cmd>Lazy sync<cr>", desc = "Run Lazy sync", noremap = false },
-      { "<leader>q", group = "Quit" },
-      { "<leader>qq", "<cmd>qa<cr>", desc = "Quite all", noremap = false },
-      { "<leader>qs", "<cmd>wqa<cr>", desc = "Write quite all", noremap = false },
-      { "<leader>qx", "<cmd>qa!<cr>", desc = "Quite without saving", noremap = false }
+      { "ZZ", "ZZ", desc = "Quite all", noremap = false },
+      { "ZQ", "ZQ", desc = "Quite without saving", noremap = false }
     })
 	end
 }

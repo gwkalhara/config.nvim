@@ -10,24 +10,24 @@ return {
 
       -- configure to work properly with neocodeium
       -- INFO: @https://github.com/monkoose/neocodeium
-      local neocodeium = require("neocodeium")
-      local commands = require("neocodeium.commands")
-
-      cmp.event:on("menu_opened", function()
-        commands.disable()
-        neocodeium.clear()
-      end)
-      cmp.event:on("menu_closed", function()
-          commands.enable()
-      end)
+      -- local neocodeium = require("neocodeium")
+      -- local commands = require("neocodeium.commands")
+      --
+      -- cmp.event:on("menu_opened", function()
+      --   commands.disable()
+      --   neocodeium.clear()
+      -- end)
+      -- cmp.event:on("menu_closed", function()
+      --     commands.enable()
+      -- end)
 
 
       require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
-        completion = {
-          autocomplete = false
-        },
+        -- completion = {
+        --   autocomplete = false
+        -- },
         snippet = {
               -- REQUIRED - you must specify a snippet engine
               expand = function(args)

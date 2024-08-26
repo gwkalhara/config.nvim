@@ -114,7 +114,8 @@ return {
       })
       lspconfig.ast_grep.setup({
         on_attach = on_attach,
-        capabilities = capabilities
+        capabilities = capabilities,
+        filetypes = { "html", "css"}
       })
       lspconfig.cssls.setup({
         on_attach = on_attach,

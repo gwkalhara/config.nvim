@@ -17,6 +17,7 @@ return {
           "tsserver",
           "spectral",
           "gopls",
+          "emmet_ls",
         }
       })
       require("mason-tool-installer").setup({
@@ -136,6 +137,31 @@ return {
             }
           }
         }
+      })
+      lspconfig.emmet_ls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        init_options = {
+          html = {
+            options = {
+              ["bem.enabled"] = true,
+            },
+          },
+        },
+        filetypes = {
+          "css",
+          "eruby",
+          "html",
+          "javascript",
+          "javascriptreact",
+          "less",
+          "sass",
+          "scss",
+          "svelte",
+          "pug",
+          "typescriptreact",
+          "vue"
+        },
       })
     end
   },

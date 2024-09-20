@@ -15,12 +15,26 @@ return {
 	config = function()
 		local noice = require("noice")
 		noice.setup({
+      cmdline = {
+        format = {
+          search_down = {
+            view = "cmdline",
+          },
+          search_up = {
+            view = "cmdline",
+          },
+        }
+      },
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
           ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
         }
+      },
+      messages = {
+        view_warn = "mini",
+        view_error = "mini"
       },
 			views = {
 				cmdline_popup = {

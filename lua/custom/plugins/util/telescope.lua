@@ -13,6 +13,7 @@ return {
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Search buffers" },
       { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find Git files" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Find recent files" },
+      { "<leader>ft", "<cmd>Telescope treesitter<cr>", desc = "List treesitter" },
     })
 	end,
 }

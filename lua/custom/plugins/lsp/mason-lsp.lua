@@ -14,7 +14,7 @@ return {
           "pyright",
           "ruff_lsp",
           "clangd",
-          "tsserver",
+          "ts_ls",
           "spectral",
           "gopls",
           "emmet_ls",

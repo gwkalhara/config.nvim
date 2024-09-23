@@ -25,6 +25,9 @@ return {
           },
         }
       },
+      notify = {
+        view = "mini"
+      },
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -33,6 +36,7 @@ return {
         }
       },
       messages = {
+        view = "mini",
         view_warn = "mini",
         view_error = "mini"
       },

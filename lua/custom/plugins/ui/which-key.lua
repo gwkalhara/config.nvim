@@ -20,7 +20,8 @@ return {
       { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy", noremap = false },
       { "<leader>ls", "<cmd>Lazy sync<cr>", desc = "Run Lazy sync", noremap = false },
       { "ZZ", "ZZ", desc = "Quite all", noremap = false },
-      { "ZQ", "ZQ", desc = "Quite without saving", noremap = false }
+      { "ZQ", "ZQ", desc = "Quite without saving", noremap = false },
+      { "<leader>st", "<cmd>LiveServerToggle<cr>", desc = "Toggle LiveServer", noremap = false },
     })
 	end
 }

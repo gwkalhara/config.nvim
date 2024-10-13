@@ -3,5 +3,11 @@ return {
   build = "npm add -g live-server",
   cmd = { "LiveServerStart", "LiveServerStop"},
   ft = {"html"},
-  config = true
+  config = function()
+    require("live-server").setup({
+      args = {
+        "--browser=zen",
+      }
+    })
+  end
 }

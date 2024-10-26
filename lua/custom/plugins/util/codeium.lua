@@ -6,23 +6,14 @@ return {
     local neocodeium = require("neocodeium")
     neocodeium.setup({})
 
-    vim.keymap.set("i", "<C-]>", function()
-        neocodeium.accept()
-    end)
-    vim.keymap.set("i", "<A-w>", function()
-        neocodeium.accept_word()
-    end)
-    vim.keymap.set("i", "<A-a>", function()
-        neocodeium.accept_line()
-    end)
-    vim.keymap.set("i", "<A-e>", function()
-        neocodeium.cycle_or_complete()
-    end)
-    vim.keymap.set("i", "<A-r>", function()
-        neocodeium.cycle_or_complete(-1)
-    end)
-    vim.keymap.set("i", "<A-BS>", function()
-        neocodeium.clear()
-    end)
+    local wk = require("which-key")
+    wk.add({
+      {"<C-]>", function() neocodeium.accept() end, desc="Accept codeium prompt", mode="i"},
+      {"<A-w>", function() neocodeium.accept_word() end, desc="Accept codeium word" , mode="i"},
+      {"<A-a>", function() neocodeium.accept_line() end, desc="Accept codeium line" , mode="i"},
+      {"<A-e>", function() neocodeium.cycle_or_complete() end, desc="Cycle prompt up" , mode="i"},
+      {"<A-r>", function() neocodeium.cycle_or_complete(-1) end, desc="Cycle prompt down" , mode="i"},
+      {"<A-BS>", function() neocodeium.clear() end, desc="Clear codeium" , mode="i"},
+    })
   end,
 }

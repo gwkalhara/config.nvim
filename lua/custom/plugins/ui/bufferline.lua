@@ -2,6 +2,7 @@ return {
 	{
 		"akinsho/bufferline.nvim",
     lazy = false,
+    enabled = false,
 		keys = {
 			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
 			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },

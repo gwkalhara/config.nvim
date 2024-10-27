@@ -23,5 +23,13 @@ return {
       { "ZQ", "ZQ", desc = "Quite without saving", noremap = false },
       { "<leader>st", "<cmd>LiveServerToggle<cr>", desc = "Toggle LiveServer", noremap = false },
     })
+
+    wk.add({
+      { "<leader>b", group = "Buffer"},
+      { "<leader>bb", "<cmd>buffers<cr>", desc = "List buffers"},
+      { "<leader>bd", "<cmd>bd<cr>", desc = "Delete buffer"},
+      { "<leader>bm", "<cmd>only<cr>", desc = "Maximize buffer"},
+    })
+
 	end
 }

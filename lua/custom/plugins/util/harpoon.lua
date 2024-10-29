@@ -35,10 +35,10 @@ return {
       {"<leader>ha", function() harpoon:list():add() end , desc = "Add file to harpoon" },
       {"<leader>hr", function() harpoon:list():remove() end , desc = "Remove file from harpoon" },
 
-      {"<leader>h1", function() harpoon:list():select(1) end },
-      {"<leader>h2", function() harpoon:list():select(2) end },
-      {"<leader>h3", function() harpoon:list():select(3) end },
-      {"<leader>h4", function() harpoon:list():select(4) end },
+      {"<m-1>", function() harpoon:list():select(1) end },
+      {"<m-2>", function() harpoon:list():select(2) end },
+      {"<m-3>", function() harpoon:list():select(3) end },
+      {"<m-4>", function() harpoon:list():select(4) end },
 
       -- Toggle previous & next buffers stored within Harpoon list
       {"<leader>hp", function() harpoon:list():prev() end, desc = "Previous harpoon buffer" },

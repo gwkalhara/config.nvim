@@ -30,48 +30,43 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = { "branch", "diff", "diagnostics" },
                 lualine_c = {
-                    { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-                    { "filename" },
+                    {
+                      "buffers",
+                      mode = 4,
+                      cond = function ()
+                        return vim.api.nvim_buf_get_name(0) ~= ""
+                      end,
+                      icons_enabled = true,
+                    }
                 },
                 lualine_x = {
-                    {
-                        require("lazy.status").updates,
-                        cond = require("lazy.status").has_updates,
-                        color = { fg = "#ff9e64" },
-                    },
-                    -- {
-                    --     require("venv-selector").venv,
-                    --     cond = function()
-                    --         if require("venv-selector").get_active_venv == nil then
-                    --             return false
-                    --         else
-                    --             return true
-                    --         end
-                    --     end,
-                    --     color = { fg = "#ff9e64" },
-                    -- },
-                    {
-                        require("noice").api.status.command.get,
-                        cond = require("noice").api.status.command.has,
-                        color = { fg = "#ff9e64" },
-                    },
-                    {
-                      require("noice").api.status.mode.get,
-                      cond = require("noice").api.status.mode.has,
-                      color = { fg = "#ff9e64" },
-                    },
-                    {
-                        require("noice").api.status.search.get,
-                        cond = require("noice").api.status.search.has,
-                        color = { fg = "#ff9e64" },
-                    },
-                    "encoding",
-                    -- "fileformat",
-                    -- "filetype",
+                  {
+                    require("lazy.status").updates,
+                    cond = require("lazy.status").has_updates,
+                    -- color = { fg = "#ff9e64" },
+                    color = { fg = "#4afeff" },
+                  },
+                  {
+                    require("noice").api.status.command.get,
+                    cond = require("noice").api.status.command.has,
+                    color = { fg = "#ff9e64" },
+                  },
+                  {
+                    require("noice").api.status.mode.get,
+                    cond = require("noice").api.status.mode.has,
+                    color = { fg = "#ff9e64" },
+                  },
+                  {
+                    require("noice").api.status.search.get,
+                    cond = require("noice").api.status.search.has,
+                    color = { fg = "#ff9e64" },
+                  },
                 },
                 lualine_y = {
-                    "progress",
-                    "location",
+                  "encoding",
+                  { "filetype", icon_only = true, },
+                  "progress",
+                  "location",
                 },
                 lualine_z = {
                     function()

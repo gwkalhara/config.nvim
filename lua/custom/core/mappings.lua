@@ -24,7 +24,6 @@ keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
-keymap("n", "<C-s>", "<cmd>wa<cr>", opts)
 keymap("n", "<esc>", "<cmd>nohlsearch<cr>", opts)
 -- keymap("n", "<leader>q", "<cmd>qa<cr>", opts)
 
@@ -71,6 +70,3 @@ keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
--- Split windows with leader
-keymap("n", "<Leader>sv", "<cmd>vsp<cr>", { desc = "Spit window vertically" })
-keymap("n", "<Leader>sh", "<cmd>sp<cr>", { desc = "Spit window horizontally" })

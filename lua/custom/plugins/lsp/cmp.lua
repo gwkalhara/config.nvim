@@ -4,7 +4,15 @@ return {
 -- Plug 'hrsh7th/cmp-cmdline'
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "onsails/lspkind.nvim" },
+    event = "InsertEnter",
+    dependencies = {
+      "onsails/lspkind.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+      "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
+      "hrsh7th/cmp-buffer", -- source for text in buffer
+      "hrsh7th/cmp-path", -- source for file system paths
+    },
     config = function()
       local cmp = require("cmp")
 
@@ -53,11 +61,4 @@ return {
       })
     end
   },
-  { "hrsh7th/cmp-nvim-lsp" },
-  {
-    "saadparwaiz1/cmp_luasnip",
-    "rafamadriz/friendly-snippets",
-    "hrsh7th/cmp-buffer", -- source for text in buffer
-    "hrsh7th/cmp-path", -- source for file system paths
-  }
 }

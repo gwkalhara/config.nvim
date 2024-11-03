@@ -4,7 +4,7 @@ return {
       "nvim-tree/nvim-web-devicons",
       "linux-cultist/venv-selector.nvim"
     },
-    lazy=false,
+    event = "VeryLazy",
     config = function()
         -- require("lualine").setup({})
         require("lualine").setup({
@@ -33,9 +33,6 @@ return {
                     {
                       "buffers",
                       mode = 4,
-                      cond = function ()
-                        return vim.api.nvim_buf_get_name(0) ~= ""
-                      end,
                       icons_enabled = true,
                     }
                 },

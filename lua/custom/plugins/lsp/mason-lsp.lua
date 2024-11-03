@@ -1,7 +1,7 @@
 return {
-  { "williamboman/mason.nvim" },
-  { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-  { "williamboman/mason-lspconfig.nvim" },
+  { "williamboman/mason.nvim", event = "VeryLazy" },
+  { "WhoIsSethDaniel/mason-tool-installer.nvim", dependencies = { "williamboman/mason.nvim" }},
+  { "williamboman/mason-lspconfig.nvim", dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" }},
   {
     "neovim/nvim-lspconfig",
     config = function()

@@ -78,8 +78,5 @@ return {
       background_colour = "#000000",
     })
 
-		vim.keymap.set("n", "<leader>nd", function()
-			vim.cmd("Noice dismiss")
-		end, { desc = "Dismiss notifications" })
 	end,
 }

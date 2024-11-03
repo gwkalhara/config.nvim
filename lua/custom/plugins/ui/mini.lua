@@ -2,6 +2,7 @@ return {
 	{
 		"echasnovski/mini.surround",
 		version = "*",
+    event = "BufReadPre",
 		config = function()
 			require("mini.surround").setup()
 		end,
@@ -16,6 +17,7 @@ return {
 	{
 		"echasnovski/mini.indentscope",
 		version = "*",
+    event = "BufReadPre",
 		config = function()
 			require("mini.indentscope").setup()
 		end,
@@ -23,6 +25,7 @@ return {
 	{
 		"echasnovski/mini.comment",
 		version = "*",
+    event = "BufReadPre",
 		config = function()
 			require("mini.comment").setup()
 		end,
@@ -30,6 +33,7 @@ return {
 	{
 		"echasnovski/mini.pairs",
 		version = "*",
+    event = "BufReadPre",
 		config = function()
 			require("mini.pairs").setup()
 		end,

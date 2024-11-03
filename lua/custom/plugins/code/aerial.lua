@@ -5,6 +5,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-tree/nvim-web-devicons",
 	},
+  event = "VeryLazy",
 	config = function()
 		require("aerial").setup({
       layout = {

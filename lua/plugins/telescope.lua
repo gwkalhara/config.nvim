@@ -34,38 +34,23 @@ return {
       },
     }
 
-    -- local no_preview = function()
-    --   return require("telescope.themes").get_dropdown {
-    --     borderchars = {
-    --       { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-    --       prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-    --       results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-    --       preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-    --     },
-    --     width = 0.8,
-    --     previewer = false,
-    --     prompt_title = false,
-    --   }
-    -- end
-    --
-    -- require("which-key").add({ { "<leader>f", group = "find" } })
-
     local builtin = require("telescope.builtin")
     local nmap = function(lhs, rhs, desc)
+      desc = "[F]ind " .. desc
       vim.keymap.set("n", lhs, rhs, { desc = desc, noremap = true, silent = true })
     end
 
-    nmap("<leader>ff", builtin.find_files, "Find files")
+    nmap("<leader>ff", builtin.find_files, "[F]iles")
 
     nmap("<leader>fr", function()
       builtin.oldfiles(require("telescope.themes").get_ivy())
-    end, "Find recent files")
+    end, "[R]ecent files")
 
-    nmap("<leader>fs", builtin.live_grep, "Search string")
+    nmap("<leader>fs", builtin.live_grep, "[S]tring")
 
     nmap("<leader>fw", function()
       builtin.grep_string(require("telescope.themes").get_ivy())
-    end, "Search string under cursor")
+    end, "[W]ord")
 
     nmap("<leader>/", function()
       builtin.current_buffer_fuzzy_find({ previewer = false })
@@ -73,22 +58,22 @@ return {
 
     nmap("<leader>fm", function()
       builtin.marks(custom_layout)
-    end, "Find marks")
+    end, "[M]arks")
 
     nmap("<leader>fq", function()
       builtin.quickfix(custom_layout)
-    end, "Telescope quickfix list")
+    end, "[Q]uickfix")
 
-    nmap("<leader>fg", "<cmd>Telescope git_status<cr>", "Find Git files(changed)")
+    nmap("<leader>fg", "<cmd>Telescope git_status<cr>", "[G]it files(changed)")
     nmap("<leader>fH", function()
       builtin.help_tags({ previewer = false })
-    end, "Search help tags")
-    nmap("<leader>fG", "<cmd>Telescope git_files<cr>", "Find Git files(all)")
-    nmap("<leader>ft", "<cmd>Telescope treesitter<cr>", "List treesitter")
+    end, "[H]elp tags")
+    nmap("<leader>fG", "<cmd>Telescope git_files<cr>", "[G]it files(all)")
+    nmap("<leader>ft", "<cmd>Telescope treesitter<cr>", "[T]reesitter tags")
     nmap("<leader>fb", function()
       builtin.buffers(require("telescope.themes").get_ivy())
-    end, "Search buffers")
-    nmap("<leader>fd", builtin.diagnostics, "Search Diagnostics")
+    end, "[B]uffers")
+    nmap("<leader>fd", builtin.diagnostics, "[D]iagnostics")
 
     nmap("<leader>fN", function()
       builtin.find_files({
@@ -98,6 +83,6 @@ return {
         prompt_title = "Config files",
         layout_config = { preview_width = 0.5 },
       })
-    end, "[F]ind [N]eovim files")
+    end, "[N]eovim files")
   end,
 }

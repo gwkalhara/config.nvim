@@ -34,6 +34,9 @@ return {
       black = {
         prepend_args = { "--line-length", "80" },
       },
+      isort = {
+        prepend_args = { "--le", "LF" },
+      },
       stylua = {
         prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
       },

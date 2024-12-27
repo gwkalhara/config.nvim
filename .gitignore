@@ -1,0 +1,16 @@
+# backup files
+*.bak
+
+# spell directory
+spell/*
+
+# Session files
+session.*
+
+# Log files
+*.log
+
+
+# specefic files
+.luarc.json
+

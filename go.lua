@@ -1,0 +1,84 @@
+local gopls = require("go.lsp").config()
+
+vim.notify(vim.inspect(gopls), vim.log.levels.INFO, {})
+
+-- [[
+--    Info  2:15:49 PM notify.info {
+--   capabilities = {
+--     textDocument = {
+--       completion = {
+--         completionItem = {
+--           commitCharactersSupport = true,
+--           deprecatedSupport = true,
+--           documentationFormat = { "markdown", "plaintext" },
+--           insertReplaceSupport = true,
+--           labelDetailsSupport = true,
+--           preselectSupport = true,
+--           resolveSupport = {
+--             properties = { "edit", "documentation", "details", "additionalTextEdits" }
+--           },
+--           snippetSupport = true
+--         },
+--         completionList = {
+--           itemDefaults = { "editRange", "insertTextFormat", "insertTextMode", "data" }
+--         },
+--         contextSupport = true,
+--         dynamicRegistration = true
+--       }
+--     }
+--   },
+--   cmd = { "gopls", "-remote.debug=:0", "-remote=auto" },
+--   filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+--   flags = {
+--     allow_incremental_sync = true,
+--     debounce_text_changes = 500
+--   },
+--   handlers = {
+--     ["textDocument/formatting"] = <function 1>,
+--     ["textDocument/rangeFormatting"] = <function 2>
+--   },
+--   message_level = 1,
+--   on_attach = <function 3>,
+--   root_dir = <function 4>,
+--   settings = {
+--     gopls = {
+--       analyses = {
+--         useany = true
+--       },
+--       buildFlags = { "-tags", "integration" },
+--       codelenses = {
+--         gc_details = true,
+--         generate = true,
+--         regenerate_cgo = true,
+--         test = true,
+--         tidy = true,
+--         upgrade_dependency = true,
+--         vendor = true
+--       },
+--       completeUnimported = true,
+--       diagnosticsDelay = "250ms",
+--       diagnosticsTrigger = "Save",
+--       gofumpt = false,
+--       hints = {
+--         assignVariableTypes = true,
+--         compositeLiteralFields = true,
+--         compositeLiteralTypes = true,
+--         constantValues = true,
+--         functionTypeParameters = true,
+--         parameterNames = true,
+--         rangeVariableTypes = true,
+--         <metatable> = {
+--           __tostring = <function 5>
+--         }
+--       },
+--       matcher = "Fuzzy",
+--       noSemanticString = true,
+--       semanticTokens = true,
+--       staticcheck = true,
+--       symbolMatcher = "FastFuzzy",
+--       usePlaceholders = true,
+--       vulncheck = "Imports"
+--     }
+--   }
+-- }
+-- ]]

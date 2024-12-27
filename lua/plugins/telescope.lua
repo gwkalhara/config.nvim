@@ -48,15 +48,13 @@ return {
     --   }
     -- end
     --
-    require("which-key").add({ { "<leader>f", group = "find" } })
+    -- require("which-key").add({ { "<leader>f", group = "find" } })
 
     local builtin = require("telescope.builtin")
     local nmap = function(lhs, rhs, desc)
       vim.keymap.set("n", lhs, rhs, { desc = desc, noremap = true, silent = true })
     end
 
-    -- BUG: go.nvim seems to overide this
-    -- nmap("<leader>ff", builtin.find_files, "Find files")
     nmap("<leader>ff", builtin.find_files, "Find files")
 
     nmap("<leader>fr", function()

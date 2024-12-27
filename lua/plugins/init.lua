@@ -19,17 +19,28 @@ return {
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    config = function()
-      local wk = require("which-key")
-      wk.setup()
-
-      wk.add({
-        { "<leader>b", group = "Buffer" },
-        { "<leader>g", group = "Git" },
-        { "<leader>o", group = "Obsidian" },
+    opts = {
+      spec = {
+        { "<leader>b", group = "[B]uffer" },
+        { "<leader>f", group = "[F]ind" },
+        { "<leader>g", group = "[G]it" },
+        { "<leader>o", group = "[O]bsidian" },
         { "<leader>x", group = "Trouble" },
-      })
-    end,
+        { "<leader>w", group = "[W]orkspace" },
+        { "<leader>h", group = "[H]arpoon" },
+      },
+    },
+    -- config = function()
+    --   local wk = require("which-key")
+    --   wk.setup()
+    --
+    --   wk.add({
+    --     { "<leader>b", group = "Buffer" },
+    --     { "<leader>g", group = "Git" },
+    --     { "<leader>o", group = "Obsidian" },
+    --     { "<leader>x", group = "Trouble" },
+    --   })
+    -- end,
   },
   {
     "barrett-ruth/live-server.nvim",

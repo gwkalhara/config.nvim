@@ -130,11 +130,20 @@ return {
       })
 
       local signs = { ERROR = "", WARN = "", INFO = "", HINT = "" }
+
+      -- BUG: This part doesn't seem to work
       local diagnostic_signs = {}
       for type, icon in pairs(signs) do
         diagnostic_signs[vim.diagnostic.severity[type]] = icon
       end
       vim.diagnostic.config({ signs = { text = diagnostic_signs } })
+
+      -- BUG: This isn't working either
+      -- -INFO: Taken from my original config
+      -- for type, icon in pairs(signs) do
+      --   local hl = "DiagnosticSign" .. type
+      --   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      -- end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())

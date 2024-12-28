@@ -20,22 +20,24 @@ vim.api.nvim_create_autocmd("filetype", {
   end,
 })
 
+-- TODO: Temporarily disabled to see it is still necessary
+-- since most `go` related functionality is handled by `go.nvim`
 -- Go specefic autocmd
 -- error checking for go
 -- formatting(tabs)
-vim.api.nvim_create_autocmd("filetype", {
-  group = filetype_group,
-  pattern = "go",
-  callback = function()
-    -- formatting
-    vim.opt_local.expandtab = false -- Use tabs instead of spaces
-    vim.opt_local.shiftwidth = 4 -- Set width for auto-indent
-    vim.opt_local.tabstop = 4 -- Set width of a tab character
-    vim.opt_local.softtabstop = 4 -- Match tab behavior with tabstop
-
-    -- keymaps
-    vim.keymap.set("n", "<leader>cR", function()
-      vim.cmd("LspRestart")
-    end, { buffer = true, desc = "Restart LSP" })
-  end,
-})
+-- vim.api.nvim_create_autocmd("filetype", {
+--   group = filetype_group,
+--   pattern = "go",
+--   callback = function()
+--     -- formatting
+--     vim.opt_local.expandtab = false -- Use tabs instead of spaces
+--     vim.opt_local.shiftwidth = 4 -- Set width for auto-indent
+--     vim.opt_local.tabstop = 4 -- Set width of a tab character
+--     vim.opt_local.softtabstop = 4 -- Match tab behavior with tabstop
+--
+--     -- keymaps
+--     vim.keymap.set("n", "<leader>cR", function()
+--       vim.cmd("LspRestart")
+--     end, { buffer = true, desc = "Restart LSP" })
+--   end,
+-- })

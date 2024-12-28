@@ -10,12 +10,12 @@ return {
   },
   ft = "markdown",
   keys = {
-    { "<leader>on", mode = "n", "<cmd>ObsidianNew<cr>", desc = "Obsidian New" },
-    { "<leader>of", mode = "n", "<cmd>ObsidianSearch<cr>", desc = "Obsidian Search" },
-    { "<leader>ob", mode = "n", "<cmd>ObsidianBacklinks<cr>", desc = "Obsidian BackLinks" },
-    { "<leader>ot", mode = "n", "<cmd>ObsidianTags<cr>", desc = "Obsidian Tags" },
-    { "<leader>ow", mode = "n", "<cmd>ObsidianWorkspace<cr>", desc = "Obsidian Workspace" },
-    { "<leader>oc", mode = "n", "<cmd>ObsidianToggleCheckbox<cr>", desc = "Obsidian ToggleCheckbox" },
+    { "<leader>on", mode = "n", "<cmd>ObsidianNew<cr>", desc = "[O]bsidian [N]ew" },
+    { "<leader>of", mode = "n", "<cmd>ObsidianSearch<cr>", desc = "[O]bsidian [S]earch" },
+    { "<leader>ob", mode = "n", "<cmd>ObsidianBacklinks<cr>", desc = "[O]bsidian [B]ackLinks" },
+    { "<leader>ot", mode = "n", "<cmd>ObsidianTags<cr>", desc = "[O]bsidian [T]ags" },
+    { "<leader>ow", mode = "n", "<cmd>ObsidianWorkspace<cr>", desc = "[O]bsidian [W]orkspace" },
+    { "<leader>oc", mode = "n", "<cmd>ObsidianToggleCheckbox<cr>", desc = "[O]bsidian Toggle[C]heckbox" },
   },
   dependencies = {
     -- Required.

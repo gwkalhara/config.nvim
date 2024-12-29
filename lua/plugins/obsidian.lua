@@ -32,12 +32,12 @@ return {
     },
     workspaces = {
       {
-        name = "personal",
-        path = "C:/Users/Hp/Documents/ObsidianVault/personal",
-      },
-      {
         name = "code",
         path = "C:/Users/Hp/Documents/ObsidianVault/code",
+      },
+      {
+        name = "personal",
+        path = "C:/Users/Hp/Documents/ObsidianVault/personal",
       },
     },
     ui = {

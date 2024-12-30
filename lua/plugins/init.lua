@@ -105,7 +105,10 @@ return {
   {
     "chentoast/marks.nvim",
     event = "BufWinEnter",
-    opts = {},
+    opts = {
+      default_mappings = true,
+      signs = true,
+    },
   },
   {
     "folke/snacks.nvim",

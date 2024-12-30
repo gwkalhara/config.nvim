@@ -36,8 +36,6 @@ return {
           -- INFO: These mappings are taken from `kickstart.nvim`
           -- need to replace them if necessary.
 
-          local sometihg
-
           map("K", vim.lsp.buf.hover, "[H]over docs")
           map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
 

@@ -22,6 +22,8 @@ return {
     opts = {
       spec = {
         { "<leader>b", group = "[B]uffer" },
+        { "<leader>c", group = "[C]ode" },
+        { "<leader>t", group = "[T]oggle" },
         { "<leader>f", group = "[F]ind" },
         { "<leader>g", group = "[G]it" },
         { "<leader>o", group = "[O]bsidian" },
@@ -30,17 +32,6 @@ return {
         { "<leader>h", group = "[H]arpoon" },
       },
     },
-    -- config = function()
-    --   local wk = require("which-key")
-    --   wk.setup()
-    --
-    --   wk.add({
-    --     { "<leader>b", group = "Buffer" },
-    --     { "<leader>g", group = "Git" },
-    --     { "<leader>o", group = "Obsidian" },
-    --     { "<leader>x", group = "Trouble" },
-    --   })
-    -- end,
   },
   {
     "barrett-ruth/live-server.nvim",
@@ -84,19 +75,29 @@ return {
       end, { desc = "Previous todo comment" })
     end,
 
-    vim.keymap.set("n", "<leader>fc", "<cmd>TodoTelescope<cr>", { desc = "Find todo [c]omments" }),
+    vim.keymap.set(
+      "n",
+      "<leader>fc",
+      "<cmd>TodoTelescope<cr>",
+      { desc = "Find todo [c]omments" }
+    ),
   },
   {
     "uga-rosa/ccc.nvim",
     event = "BufWinEnter",
-    config = function()
-      require("ccc").setup({
-        highlighter = {
-          auto_enable = true,
-        },
-      })
-      vim.keymap.set("n", "<leader>cp", "<cmd>CccPick<cr>", { desc = "Pick color" })
-    end,
+    opts = {
+      highlighter = {
+        auto_enable = true,
+      },
+    },
+    -- config = function()
+    --   require("ccc").setup({
+    --     highlighter = {
+    --       auto_enable = true,
+    --     },
+    --   })
+    --   vim.keymap.set("n", "<leader>cp", "<cmd>CccPick<cr>", { desc = "Pick color" })
+    -- end,
   },
   {
     "stevearc/dressing.nvim",
@@ -117,9 +118,13 @@ return {
     opts = {
       bigfile = { enabled = true },
       notifier = { enabled = false },
-      terminal = { enabled = false },
+      terminal = { enabled = true },
+      indent = { enabled = true },
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
+      statuscolumn = {
+        enabled = true,
+        folds = { open = true },
+      },
       words = { enabled = true },
       git = { enabled = true },
     },
@@ -128,6 +133,21 @@ return {
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+      { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+      { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+      {
+        "<leader>ttf",
+        function()
+          Snacks.terminal.toggle("pwsh.exe", {win = {position="float"}})
+        end,
+        desc = "[T]oggle [T]erminal [F]loat "
+      },
+      { "<leader>ttb",
+      function()
+        Snacks.terminal.toggle("pwsh.exe", {win = {position="bottom"}})
+      end,
+      desc = "[T]oggle [T]erminal [B]ottom "
+      },
     },
   },
   {
@@ -143,22 +163,26 @@ return {
   },
   {
     "linux-cultist/venv-selector.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap-python" },
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-telescope/telescope.nvim",
+      "mfussenegger/nvim-dap-python",
+    },
     --#NOTE: used for the new version(2024)
     branch = "regexp", -- This is the regexp branch, use this for the new version
     ft = "python",
-    keys = {
-      -- Keymap to open VenvSelector to pick a venv.
-      { "<leader>cvs", "<cmd>VenvSelect<cr>" },
-      -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
-      { "<leader>cvc", "<cmd>VenvSelectCached<cr>" },
-      {
-        "<leader>cvp",
-        function()
-          print(require("venv-selector").venv())
-        end,
-      },
-    },
+    -- keys = {
+    --   -- Keymap to open VenvSelector to pick a venv.
+    --   { "<leader>cvs", "<cmd>VenvSelect<cr>" },
+    --   -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
+    --   { "<leader>cvc", "<cmd>VenvSelectCached<cr>" },
+    --   {
+    --     "<leader>cvp",
+    --     function()
+    --       print(require("venv-selector").venv())
+    --     end,
+    --   },
+    -- },
     config = function()
       require("venv-selector").setup({
         settings = {
@@ -173,7 +197,11 @@ return {
       wk.add({
         { "<leader>cv", group = "venv" },
         { "<leader>cvs", "<cmd>VenvSelect<cr>", desc = "Select venv" },
-        { "<leader>cvc", "<cmd>VenvSelectCached<cr>", desc = "Select venv from cache" },
+        {
+          "<leader>cvc",
+          "<cmd>VenvSelectCached<cr>",
+          desc = "Select venv from cache",
+        },
         {
           "<leader>cvp",
           function()
@@ -189,10 +217,30 @@ return {
     opts = {
       checkbox = {
         custom = {
-          warn = { raw = "[!]", rendered = " ", highlight = "RenderMarkdownError", scope_highlight = nil },
-          fix = { raw = "[+]", rendered = "󱌣 ", highlight = "RenderMarkdownHint", scope_highlight = nil },
-          todo = { raw = "[~]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo", scope_highlight = nil },
-          arrow = { raw = "[>]", rendered = "", highlight = "RenderMarkdownHint", scope_highlight = nil },
+          warn = {
+            raw = "[!]",
+            rendered = " ",
+            highlight = "RenderMarkdownError",
+            scope_highlight = nil,
+          },
+          fix = {
+            raw = "[+]",
+            rendered = "󱌣 ",
+            highlight = "RenderMarkdownHint",
+            scope_highlight = nil,
+          },
+          todo = {
+            raw = "[~]",
+            rendered = "󰥔 ",
+            highlight = "RenderMarkdownTodo",
+            scope_highlight = nil,
+          },
+          arrow = {
+            raw = "[>]",
+            rendered = "",
+            highlight = "RenderMarkdownHint",
+            scope_highlight = nil,
+          },
         },
       },
     },
@@ -221,5 +269,21 @@ return {
     "pixelneo/vim-python-docstring",
     ft = "python",
     cmd = { "Docstring", "DocstringTypes", "DocstringLine" },
+  },
+  -- WARN: Dev plugin, DO NOT COMMIT
+  {
+    dir = "~/Desktop/Code/Lua/Plugins/plugins/present.nvim",
+    dependencies = { "folke/noice.nvim" },
+    opts = {},
+  },
+  {
+    dir = "~/Desktop/Code/Lua/Plugins/plugins/docstrings.nvim",
+    dependencies = { "folke/noice.nvim" },
+    opts = { title = "Testing docstrings", num = 10 },
+    config = function(_, opts)
+      vim.print("before")
+      require("docstrings").setup(opts)
+      vim.print("after")
+    end,
   },
 }

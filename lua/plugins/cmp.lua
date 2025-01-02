@@ -1,5 +1,5 @@
 local custom_snippest = function()
-  local ls = require "luasnip" -- Load luasnip
+  local ls = require("luasnip") -- Load luasnip
   local s = ls.snippet -- Snippet shorthand
   local t = ls.text_node -- Text node shorthand
   local i = ls.insert_node -- Text insert position
@@ -16,6 +16,12 @@ local custom_snippest = function()
       }),
     })
   end
+
+  ls.add_snippets("python", {
+    s({ trig = "args kwargs", name = "Func parameters" }, {
+      t("*args, **kwargs"),
+    }),
+  })
 end
 
 return {
@@ -29,7 +35,7 @@ return {
         -- Build Step is needed for regex support in snippets.
         -- This step is not supported in many windows environments.
         -- Remove the below condition to re-enable on windows.
-        if vim.fn.has "win32" == 1 or vim.fn.executable "make" == 0 then
+        if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
           return
         end
         return "make install_jsregexp"
@@ -51,10 +57,10 @@ return {
     "hrsh7th/cmp-path",
   },
   config = function()
-    local lspkind = require "lspkind"
+    local lspkind = require("lspkind")
     lspkind.init()
 
-    local kind_formatter = lspkind.cmp_format {
+    local kind_formatter = lspkind.cmp_format({
       mode = "symbol_text",
       menu = {
         buffer = "[buf]",
@@ -63,14 +69,14 @@ return {
         path = "[path]",
         luasnip = "[snip]",
       },
-    }
+    })
 
     -- See `:help cmp`
-    local cmp = require "cmp"
-    local luasnip = require "luasnip"
-    luasnip.config.setup {}
+    local cmp = require("cmp")
+    local luasnip = require("luasnip")
+    luasnip.config.setup({})
 
-    cmp.setup {
+    cmp.setup({
       window = {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
@@ -90,17 +96,17 @@ return {
           return vim_item
         end,
       },
-      completion = { completeopt = "menu,menuone,noinsert" },
+      completion = { completeopt = "menu,menuone,preview,noinsert" },
 
-      mapping = cmp.mapping.preset.insert {
+      mapping = cmp.mapping.preset.insert({
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<tab>"] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<C-Space>"] = cmp.mapping.complete {},
-      },
+        ["<tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<C-Space>"] = cmp.mapping.complete({}),
+      }),
       sources = {
         {
           name = "lazydev",
@@ -111,7 +117,7 @@ return {
         { name = "luasnip" },
         { name = "path" },
       },
-    }
+    })
     custom_snippest()
 
     -- INFO: Snippet mappings

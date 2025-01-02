@@ -1,7 +1,12 @@
 return {
   "nvim-telescope/telescope.nvim",
   branch = "0.1.x",
-  dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    -- "nvim-telescope/telescope-fzy-native.nvim",
+  },
   event = "VeryLazy",
   config = function()
     require("telescope").setup({
@@ -23,8 +28,16 @@ return {
           theme = "ivy",
         },
       },
-      extensions = {},
+      extensions = {
+        fzf = {},
+        -- fzy_native = {
+        --   override_generic_sorter = true,
+        --   override_file_sorter = true,
+        -- },
+      },
     })
+
+    require("telescope").load_extension("fzf")
 
     local custom_layout = {
       sorting_strategy = "ascending",
@@ -37,7 +50,12 @@ return {
     local builtin = require("telescope.builtin")
     local nmap = function(lhs, rhs, desc)
       desc = "[F]ind " .. desc
-      vim.keymap.set("n", lhs, rhs, { desc = desc, noremap = true, silent = true })
+      vim.keymap.set(
+        "n",
+        lhs,
+        rhs,
+        { desc = desc, noremap = true, silent = true }
+      )
     end
 
     nmap("<leader>ff", builtin.find_files, "[F]iles")
@@ -75,7 +93,7 @@ return {
     end, "[B]uffers")
     nmap("<leader>fd", builtin.diagnostics, "[D]iagnostics")
 
-    nmap("<leader>fN", function()
+    nmap("<leader>fC", function()
       builtin.find_files({
         cwd = vim.fn.stdpath("config"),
         sorting_strategy = "ascending",
@@ -83,6 +101,16 @@ return {
         prompt_title = "Config files",
         layout_config = { preview_width = 0.5 },
       })
-    end, "[N]eovim files")
+    end, "[N]eovim [C]onfig files")
+    nmap("<leader>fP", function()
+      builtin.find_files({
+        ---@diagnostic disable-next-line: param-type-mismatch
+        cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
+        sorting_strategy = "ascending",
+        layout_strategy = "bottom_pane",
+        prompt_title = "Config files",
+        layout_config = { preview_width = 0.5 },
+      })
+    end, "[N]eovim [P]lugins")
   end,
 }

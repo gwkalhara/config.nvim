@@ -14,3 +14,4 @@ session.*
 # specefic files
 .luarc.json
 
+plugin_

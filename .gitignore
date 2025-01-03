@@ -15,3 +15,5 @@ session.*
 .luarc.json
 
 plugin_
+lazy-lock.json
+lua/plugins/dev.lua

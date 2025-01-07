@@ -123,7 +123,10 @@ return {
       quickfile = { enabled = true },
       statuscolumn = {
         enabled = true,
-        folds = { open = true },
+        folds = { open = false },
+        git = {
+          patterns = { "MiniDiffSign", "GitSign" },
+        },
       },
       words = { enabled = true },
       git = { enabled = true },
@@ -133,8 +136,8 @@ return {
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
-      { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-      { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+      { "]r", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+      { "[r", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       {
         "<leader>ttf",
         function()
@@ -269,21 +272,5 @@ return {
     "pixelneo/vim-python-docstring",
     ft = "python",
     cmd = { "Docstring", "DocstringTypes", "DocstringLine" },
-  },
-  -- WARN: Dev plugin, DO NOT COMMIT
-  {
-    dir = "~/Desktop/Code/Lua/Plugins/plugins/present.nvim",
-    dependencies = { "folke/noice.nvim" },
-    opts = {},
-  },
-  {
-    dir = "~/Desktop/Code/Lua/Plugins/plugins/docstrings.nvim",
-    dependencies = { "folke/noice.nvim" },
-    opts = { title = "Testing docstrings", num = 10 },
-    config = function(_, opts)
-      vim.print("before")
-      require("docstrings").setup(opts)
-      vim.print("after")
-    end,
   },
 }

@@ -1,6 +1,8 @@
+-- TODO: remove this plugin
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
+    enabled = false,
     branch = "v3.x",
     cmd = "Neotree",
     dependencies = {
@@ -10,7 +12,7 @@ return {
     },
     keys = {
       -- {
-      --   "<leader>e",
+      --   "<leader>\\",
       --   function()
       --     require("neo-tree.command").execute({ toggle = true })
       --   end,
@@ -19,7 +21,11 @@ return {
       {
         "<leader>ge",
         function()
-          require("neo-tree.command").execute({ source = "git_status", toggle = true, position = "right" })
+          require("neo-tree.command").execute({
+            source = "git_status",
+            toggle = true,
+            position = "right",
+          })
         end,
         desc = "Git explorer",
       },
@@ -36,6 +42,7 @@ return {
       end
     end,
     opts = {
+      close_if_last_window = true,
       event_handlers = {
         {
           event = "neo_tree_buffer_enter",
@@ -45,7 +52,13 @@ return {
         },
       },
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-      open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
+      open_files_do_not_replace_types = {
+        "terminal",
+        "Trouble",
+        "trouble",
+        "qf",
+        "Outline",
+      },
       filesystem = {
         bind_to_cwd = false,
         follow_current_file = { enabled = true },
@@ -56,7 +69,7 @@ return {
           hide_gitignored = false,
           hide_hidden = false, -- only works on Windows for hidden files/directories
         },
-        hijack_netrw_behaviour = "open_current",
+        hijack_netrw_behaviour = "disabled",
       },
       window = {
         position = "right",

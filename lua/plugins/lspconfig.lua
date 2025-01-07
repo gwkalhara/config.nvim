@@ -88,8 +88,6 @@ return {
             "[G]oto [T]ype Definition"
           )
 
-          map("<leader>D", vim.diagnostic.open_float, "[D]iagnostic float")
-
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
           map(

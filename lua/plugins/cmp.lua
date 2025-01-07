@@ -6,8 +6,8 @@ local custom_snippest = function()
 
   -- INFO: `todo-comments` snippets
   -- List of styles
-  local styles = { "INFO", "TEST", "BUG", "WARN", "TODO", "PERF", "HACK", "FIX" }
-  -- Iterate through styles and add snippets
+  local styles =
+    { "INFO", "TEST", "BUG", "WARN", "TODO", "PERF", "HACK", "FIX", "ERROR" } -- Iterate through styles and add snippets
   for _, style in ipairs(styles) do
     ls.add_snippets("all", {
       s(style:lower(), {
@@ -55,6 +55,7 @@ return {
 
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
+    "gamithaKalharaW/cmp-go-pkgs",
   },
   config = function()
     local lspkind = require("lspkind")
@@ -68,6 +69,7 @@ return {
         nvim_lua = "[api]",
         path = "[path]",
         luasnip = "[snip]",
+        go_pkgs = "[pkgs]",
       },
     })
 
@@ -113,6 +115,7 @@ return {
           -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
           group_index = 0,
         },
+        { name = "go_pkgs" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },

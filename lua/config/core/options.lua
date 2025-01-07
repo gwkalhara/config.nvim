@@ -37,9 +37,11 @@ local options = {
 -- INFO: Config shown in helpdocs to use Powershell as terminal shell
 vim.cmd([[let &shell = executable('pwsh') ? 'pwsh' : 'powershell']])
 vim.cmd(
-  [[let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;']]
+  [[let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;']]
 )
-vim.cmd([[let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode']])
+vim.cmd(
+  [[let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode']]
+)
 vim.cmd([[let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode']])
 vim.cmd([[set shellquote= shellxquote=]])
 
@@ -93,7 +95,11 @@ vim.api.nvim_create_user_command("CCmdWingetFormat", function()
   vim.cmd([[/\w\+\ \w\+\ \ \ ]])
   vim.cmd("normal WW")
   vim.cmd("normal Gh")
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-v>", true, false, true), "n", true)
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<C-v>", true, false, true),
+    "n",
+    true
+  )
 
   -- Delay moving the cursor to ensure visual mode is active
   vim.defer_fn(function()

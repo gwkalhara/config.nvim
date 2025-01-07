@@ -55,7 +55,7 @@ return {
 
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
-    "gamithaKalharaW/cmp-go-pkgs",
+    "Snikimonkd/cmp-go-pkgs",
   },
   config = function()
     local lspkind = require("lspkind")

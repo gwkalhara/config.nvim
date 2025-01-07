@@ -117,7 +117,12 @@ return {
     lazy = false,
     opts = {
       bigfile = { enabled = true },
-      notifier = { enabled = false },
+      notifier = {
+        enabled = true,
+        timeout = 3000,
+        style = "fancy",
+        top_down = false,
+      },
       terminal = { enabled = true },
       indent = { enabled = true },
       quickfile = { enabled = true },
@@ -133,6 +138,8 @@ return {
     },
       -- stylua: ignore
     keys = {
+      { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+      { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Notification history" },
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },

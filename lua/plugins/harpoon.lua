@@ -2,8 +2,9 @@ return {
   "ThePrimeagen/harpoon",
   branch = "harpoon2",
   keys = {
-    { "<leader>hh" },
-    { "<leader>fh" },
+    { "<leader>h", desc = "[H]arpoon" },
+    { "<leader>hh", desc = "[H]arpoon window" },
+    { "<leader>fh", desc = "[F]ind [H]arpoon files" },
     { "<C-n>" },
     { "<C-p>" },
   },
@@ -12,10 +13,11 @@ return {
     "nvim-telescope/telescope.nvim",
   },
   config = function()
-    local harpoon = require "harpoon"
-    local wk = require "which-key"
+    local harpoon = require("harpoon")
+    -- TODO: Remove which-key mapping codeblocks
+    -- local wk = require("which-key")
 
-    harpoon.setup {}
+    harpoon.setup({})
 
     -- basic telescope configuration
     local conf = require("telescope.config").values
@@ -25,14 +27,14 @@ return {
         table.insert(file_paths, item.value)
       end
 
-      local harpoon_window_opts = require("telescope.themes").get_ivy {
+      local harpoon_window_opts = require("telescope.themes").get_ivy({
         prompt_title = "Harpoon",
-        finder = require("telescope.finders").new_table {
+        finder = require("telescope.finders").new_table({
           results = file_paths,
-        },
-        previewer = conf.file_previewer {},
-        sorter = conf.generic_sorter {},
-      }
+        }),
+        previewer = conf.file_previewer({}),
+        sorter = conf.generic_sorter({}),
+      })
 
       require("telescope.pickers").new({}, harpoon_window_opts):find()
     end
@@ -45,12 +47,12 @@ return {
       vim.keymap.set("n", lhs, rhs, { desc = desc })
     end
 
-    vim.keymap.set("n", "<C-n>", function()
+    nmap("<C-n>", function()
       harpoon:list():next()
-    end, { desc = "Harpoon next" })
-    vim.keymap.set("n", "<C-p>", function()
+    end, "Harpoon next")
+    nmap("<C-p>", function()
       harpoon:list():prev()
-    end, { desc = "Harpoon previous" })
+    end, "Harpoon previous")
 
     nmap("<leader>ha", function()
       harpoon:list():add()
@@ -71,24 +73,11 @@ return {
     nmap("<m-4>", function()
       harpoon:list():select(4)
     end, "")
-
-    -- stylua: ignore
-    wk.add {
-
-      { "<leader>h", group = "Harpoon" },
-      -- { "<leader>ha", function() harpoon:list():add() end, desc = "Add file to harpoon", },
-      -- { "<leader>hr", function() harpoon:list():remove() end, desc = "Remove file from harpoon", },
-
-      -- { "<m-1>", function() harpoon:list():select(1) end, },
-      -- { "<m-2>", function() harpoon:list():select(2) end, },
-      -- { "<m-3>", function() harpoon:list():select(3) end, },
-      -- { "<m-4>", function() harpoon:list():select(4) end, },
-      --
-      -- Toggle previous & next buffers stored within Harpoon list
-      { "<leader>hp", function() harpoon:list():prev() end, desc = "Previous harpoon buffer", },
-      { "<leader>hn", function() harpoon:list():next() end, desc = "Next harpoon buffer", },
-      { "<leader>fh", function() toggle_telescope(harpoon:list()) end, desc = "Search harpoon files", },
-      { "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, desc = "Open harpoon window", },
-    }
+    nmap("<leader>fh", function()
+      toggle_telescope(harpoon:list())
+    end, "[F]ind [H]arpoon files")
+    nmap("<leader>hh", function()
+      harpoon.ui:toggle_quick_menu(harpoon:list())
+    end, "Open harpoon window")
   end,
 }

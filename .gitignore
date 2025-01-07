@@ -14,3 +14,6 @@ session.*
 # specefic files
 .luarc.json
 
+plugin_
+lazy-lock.json
+lua/plugins/dev.lua

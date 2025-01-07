@@ -21,7 +21,7 @@ vim.g.maplocalleader = " "
 -- Normal --
 
 keymap("n", "<esc>", "<cmd>nohlsearch<cr>", opts)
-keymap("n", "<leader>e", ":Lex! 40<cr>", opts)
+keymap("n", "<leader>\\", ":Lex! 40<cr>", opts)
 
 -- Quickfix list navigation
 keymap("n", "<C-j>", "<cmd>cnext<cr>", opts)
@@ -34,8 +34,18 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
-keymap("n", "<leader>bn", ":bnext<CR>", vim.tbl_extend("keep", opts, { desc = "Next buffer" }))
-keymap("n", "<leader>bp", ":bprevious<CR>", vim.tbl_extend("keep", opts, { desc = "Previous buffer" }))
+keymap(
+  "n",
+  "<leader>bn",
+  ":bnext<CR>",
+  vim.tbl_extend("keep", opts, { desc = "Next buffer" })
+)
+keymap(
+  "n",
+  "<leader>bp",
+  ":bprevious<CR>",
+  vim.tbl_extend("keep", opts, { desc = "Previous buffer" })
+)
 
 -- Insert --
 -- Press jk fast to enter
@@ -43,9 +53,24 @@ keymap("i", "jk", "<ESC>", opts)
 keymap("i", "JK", "<ESC>", opts)
 
 -- Seperate mapping for windows clipboard yank & paset
-keymap("n", "<leader>y", '"+y', vim.tbl_extend("keep", opts, { desc = "Yank to clipboard" }))
-keymap("n", "<leader>p", '"+p', vim.tbl_extend("keep", opts, { desc = "Paste from clipboard" }))
-keymap("v", "<leader>y", '"+y', vim.tbl_extend("keep", opts, { desc = "Yank to clipboard" }))
+keymap(
+  "n",
+  "<leader>y",
+  '"+y',
+  vim.tbl_extend("keep", opts, { desc = "Yank to clipboard" })
+)
+keymap(
+  "n",
+  "<leader>p",
+  '"+p',
+  vim.tbl_extend("keep", opts, { desc = "Paste from clipboard" })
+)
+keymap(
+  "v",
+  "<leader>y",
+  '"+y',
+  vim.tbl_extend("keep", opts, { desc = "Yank to clipboard" })
+)
 
 -- Visual --
 -- Stay in indent mode

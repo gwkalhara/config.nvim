@@ -2,7 +2,6 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
-    "linux-cultist/venv-selector.nvim",
   },
   event = "VeryLazy",
   config = function()

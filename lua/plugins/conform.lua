@@ -15,6 +15,11 @@ return {
       else
         lsp_format_opt = "fallback"
       end
+
+      if vim.bo[bufnr].filetype == "python" then
+        vim.cmd("PyrightOrganizeImports")
+      end
+
       return {
         timeout_ms = 5000,
         lsp_format = lsp_format_opt,
@@ -22,7 +27,8 @@ return {
     end,
     formatters_by_ft = {
       lua = { "stylua" },
-      python = { "isort", "black" },
+      -- python = { "isort", "black" },
+      python = { "ruff_format" },
       javascript = { "prettier" },
       go = { "gofumpt", "goimports-reviser", "golines" },
       html = { "prettier" },
@@ -30,13 +36,6 @@ return {
       json = { "prettier" },
       markdown = { "prettier" },
     },
-    formatters = {
-      black = {
-        prepend_args = { "--line-length", "80" },
-      },
-      stylua = {
-        prepend_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-      },
-    },
+    formatters = {},
   },
 }

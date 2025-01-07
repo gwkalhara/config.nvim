@@ -31,6 +31,7 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
+      playground = { enable = true },
       incremental_selection = {
         enable = true,
       },
@@ -60,16 +61,14 @@ return {
             ["]c"] = "@class.outer",
           },
           goto_next_end = {
-            ["]f"] = "@function.outer",
-            ["]c"] = "@class.outer",
+            ["]F"] = "@function.outer",
           },
           goto_previous_start = {
             ["[f"] = "@function.outer",
             ["[c"] = "@class.outer",
           },
           goto_previous_end = {
-            ["[f"] = "@function.outer",
-            ["[c"] = "@class.outer",
+            ["[F"] = "@function.outer",
           },
         },
         swap = {
@@ -78,7 +77,7 @@ return {
             ["<leader>a"] = "@parameter.inner",
           },
           swap_previous = {
-            ["<leader>a"] = "@parameter.inner",
+            ["<leader>A"] = "@parameter.inner",
           },
         },
       },

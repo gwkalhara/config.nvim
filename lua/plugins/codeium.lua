@@ -9,6 +9,7 @@ return {
     neocodeium.setup({
       enabled = true,
       manual = true,
+      silent = true,
     })
     -- neocodeium.setup()
 

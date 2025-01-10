@@ -20,6 +20,7 @@ return {
       vim.o.timeoutlen = 300
     end,
     opts = {
+      preset = "classic",
       spec = {
         { "<leader>b", group = "[B]uffer" },
         { "<leader>c", group = "[C]ode" },
@@ -30,6 +31,7 @@ return {
         { "<leader>x", group = "Trouble" },
         { "<leader>w", group = "[W]orkspace" },
         { "<leader>h", group = "[H]arpoon" },
+        { "<leader>n", group = "[N]otification" },
       },
     },
   },
@@ -75,16 +77,12 @@ return {
       end, { desc = "Previous todo comment" })
     end,
 
-    vim.keymap.set(
-      "n",
-      "<leader>fc",
-      "<cmd>TodoTelescope<cr>",
-      { desc = "Find todo [c]omments" }
-    ),
+    vim.keymap.set("n", "<leader>fc", "<cmd>TodoTelescope<cr>", { desc = "Find todo [c]omments" }),
   },
   {
     "uga-rosa/ccc.nvim",
-    event = "BufWinEnter",
+    lazy = true,
+    -- event = "BufWinEnter",
     opts = {
       highlighter = {
         auto_enable = true,
@@ -138,8 +136,8 @@ return {
     },
       -- stylua: ignore
     keys = {
-      { "<leader>nd", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-      { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Notification history" },
+      { "<leader>nd", function() Snacks.notifier.hide() end, desc = "[N]otification [D]ismiss" },
+      { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otification [H]istory" },
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
@@ -204,13 +202,22 @@ return {
         },
       })
       local wk = require("which-key")
+      local map_cond = function()
+        return vim.bo.filetype == "python"
+      end
       wk.add({
-        { "<leader>cv", group = "venv" },
-        { "<leader>cvs", "<cmd>VenvSelect<cr>", desc = "Select venv" },
+        { "<leader>cv", group = "venv", cond = map_cond },
+        {
+          "<leader>cvs",
+          "<cmd>VenvSelect<cr>",
+          desc = "Select venv",
+          cond = map_cond,
+        },
         {
           "<leader>cvc",
           "<cmd>VenvSelectCached<cr>",
           desc = "Select venv from cache",
+          cond = map_cond,
         },
         {
           "<leader>cvp",
@@ -218,6 +225,7 @@ return {
             print(require("venv-selector").venv())
           end,
           desc = "Print selected venv",
+          cond = map_cond,
         },
       })
     end,

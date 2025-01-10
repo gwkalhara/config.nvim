@@ -4,7 +4,7 @@ return {
     event = "BufReadPre",
     opts = {
       signs = {
-        signcoloumn = false, -- signcoloumn is handled by `Snacks.nvim` & `mini.diff`
+        signcoloumn = true, -- signcoloumn is handled by `Snacks.nvim` & `mini.diff`
       },
       on_attach = function(bufnr)
         local gitsigns = require("gitsigns")

@@ -39,9 +39,7 @@ vim.cmd([[let &shell = executable('pwsh') ? 'pwsh' : 'powershell']])
 vim.cmd(
   [[let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;']]
 )
-vim.cmd(
-  [[let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode']]
-)
+vim.cmd([[let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode']])
 vim.cmd([[let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode']])
 vim.cmd([[set shellquote= shellxquote=]])
 
@@ -95,11 +93,7 @@ vim.api.nvim_create_user_command("CCmdWingetFormat", function()
   vim.cmd([[/\w\+\ \w\+\ \ \ ]])
   vim.cmd("normal WW")
   vim.cmd("normal Gh")
-  vim.api.nvim_feedkeys(
-    vim.api.nvim_replace_termcodes("<C-v>", true, false, true),
-    "n",
-    true
-  )
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-v>", true, false, true), "n", true)
 
   -- Delay moving the cursor to ensure visual mode is active
   vim.defer_fn(function()
@@ -114,3 +108,6 @@ vim.api.nvim_create_user_command("CcmdToggleWhitespace", function()
   ---@diagnostic disable-next-line: undefined-field
   vim.opt.list = not vim.opt.list:get()
 end, {})
+
+-- BUG: there is a bug related to treesitter, the following is a temporary fix (https://github.com/neovim/neovim/issues/31675)
+vim.hl = vim.highlight

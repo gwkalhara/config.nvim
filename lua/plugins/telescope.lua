@@ -50,12 +50,7 @@ return {
     local builtin = require("telescope.builtin")
     local nmap = function(lhs, rhs, desc)
       desc = "[F]ind " .. desc
-      vim.keymap.set(
-        "n",
-        lhs,
-        rhs,
-        { desc = desc, noremap = true, silent = true }
-      )
+      vim.keymap.set("n", lhs, rhs, { desc = desc, noremap = true, silent = true })
     end
 
     nmap("<leader>ff", builtin.find_files, "[F]iles")
@@ -64,7 +59,8 @@ return {
       builtin.oldfiles(require("telescope.themes").get_ivy())
     end, "[R]ecent files")
 
-    nmap("<leader>fs", builtin.live_grep, "[S]tring")
+    -- nmap("<leader>fs", builtin.live_grep, "[S]tring")
+    nmap("<leader>fs", require("extras.telescope").live_multigrep, "[S]tring")
 
     nmap("<leader>fw", function()
       builtin.grep_string(require("telescope.themes").get_ivy())

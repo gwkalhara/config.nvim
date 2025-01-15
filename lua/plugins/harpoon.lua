@@ -73,6 +73,11 @@ return {
     nmap("<m-4>", function()
       harpoon:list():select(4)
     end, "")
+
+    nmap("<m-0>", function()
+      harpoon:list():select(harpoon:list():length())
+    end, "")
+
     nmap("<leader>fh", function()
       toggle_telescope(harpoon:list())
     end, "[F]ind [H]arpoon files")

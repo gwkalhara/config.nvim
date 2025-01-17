@@ -26,6 +26,7 @@ return {
         { "<leader>c", group = "[C]ode" },
         { "<leader>t", group = "[T]oggle" },
         { "<leader>f", group = "[F]ind" },
+        { "<leader>s", group = "[S]earch" },
         { "<leader>g", group = "[G]it" },
         { "<leader>o", group = "[O]bsidian" },
         { "<leader>x", group = "Trouble" },
@@ -115,6 +116,7 @@ return {
     lazy = false,
     opts = {
       bigfile = { enabled = true },
+      picker = { enabled = true },
       notifier = {
         enabled = true,
         timeout = 3000,
@@ -136,11 +138,16 @@ return {
     },
       -- stylua: ignore
     keys = {
+      -- search
+      { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "[S]earch [T]odo" },
+      -- notifier
       { "<leader>nd", function() Snacks.notifier.hide() end, desc = "[N]otification [D]ismiss" },
       { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otification [H]istory" },
+      -- git
       { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
+      -- words
       { "]r", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "[r", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       {

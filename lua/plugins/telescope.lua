@@ -30,10 +30,6 @@ return {
       },
       extensions = {
         fzf = {},
-        -- fzy_native = {
-        --   override_generic_sorter = true,
-        --   override_file_sorter = true,
-        -- },
       },
     })
 
@@ -48,46 +44,46 @@ return {
     }
 
     local builtin = require("telescope.builtin")
-    local nmap = function(lhs, rhs, desc)
-      desc = "[F]ind " .. desc
+    local nmap = function(lhs, rhs, desc, group)
+      group = group or "[F]ind "
+      desc = group .. desc
       vim.keymap.set("n", lhs, rhs, { desc = desc, noremap = true, silent = true })
     end
 
+    -- find
     nmap("<leader>ff", builtin.find_files, "[F]iles")
-
     nmap("<leader>fr", function()
       builtin.oldfiles(require("telescope.themes").get_ivy())
     end, "[R]ecent files")
-
-    -- nmap("<leader>fs", builtin.live_grep, "[S]tring")
     nmap("<leader>fs", require("extras.telescope").live_multigrep, "[S]tring")
-
     nmap("<leader>fw", function()
       builtin.grep_string(require("telescope.themes").get_ivy())
     end, "[W]ord")
-
-    nmap("<leader>/", function()
-      builtin.current_buffer_fuzzy_find({ previewer = false })
-    end, "Fuzzy find pattern")
-
-    nmap("<leader>fm", function()
-      builtin.marks(custom_layout)
-    end, "[M]arks")
-
-    nmap("<leader>fq", function()
-      builtin.quickfix(custom_layout)
-    end, "[Q]uickfix")
-
     nmap("<leader>fg", "<cmd>Telescope git_status<cr>", "[G]it files(changed)")
-    nmap("<leader>fH", function()
-      builtin.help_tags({ previewer = false })
-    end, "[H]elp tags")
     nmap("<leader>fG", "<cmd>Telescope git_files<cr>", "[G]it files(all)")
     nmap("<leader>ft", "<cmd>Telescope treesitter<cr>", "[T]reesitter tags")
     nmap("<leader>fb", function()
       builtin.buffers(require("telescope.themes").get_ivy())
     end, "[B]uffers")
-    nmap("<leader>fd", builtin.diagnostics, "[D]iagnostics")
+
+    -- search
+    nmap("<leader>sd", function()
+      -- builtin.diagnostics()
+      Snacks.picker.diagnostics()
+    end, "[D]iagnostics", "[S]earch ")
+    nmap("<leader>sh", function()
+      Snacks.picker.help()
+    end, "[H]elp Pages", "[S]earch ")
+    nmap("<leader>sm", function()
+      builtin.marks(custom_layout)
+    end, "[M]arks", "[S]earch ")
+    nmap("<leader>sq", function()
+      builtin.quickfix(custom_layout)
+    end, "[Q]uickfix List", "[S]earch ")
+
+    nmap("<leader>/", function()
+      builtin.current_buffer_fuzzy_find({ previewer = false })
+    end, "Fuzzy find pattern")
 
     nmap("<leader>fC", function()
       builtin.find_files({

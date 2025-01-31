@@ -13,28 +13,32 @@ return {
   },
   {
     "folke/which-key.nvim",
-    dependencies = { "echasnovski/mini.icons" },
+    dependencies = { "echasnovski/mini.nvim" },
     event = "VimEnter",
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {
-      preset = "classic",
-      spec = {
-        { "<leader>b", group = "[B]uffer" },
-        { "<leader>c", group = "[C]ode" },
-        { "<leader>t", group = "[T]oggle" },
-        { "<leader>f", group = "[F]ind" },
-        { "<leader>s", group = "[S]earch" },
-        { "<leader>g", group = "[G]it" },
-        { "<leader>o", group = "[O]bsidian" },
-        { "<leader>x", group = "Trouble" },
-        { "<leader>w", group = "[W]orkspace" },
-        { "<leader>h", group = "[H]arpoon" },
-        { "<leader>n", group = "[N]otification" },
-      },
-    },
+    opts = function()
+      ---@diagnostic disable-next-line: undefined-global
+      local git_icon, _, _ = MiniIcons.get("filetype", "git")
+      return {
+        preset = "classic",
+        spec = {
+          { "<leader>b", group = "[B]uffer" },
+          { "<leader>c", group = "[C]ode" },
+          { "<leader>t", group = "[T]oggle" },
+          { "<leader>f", group = "[F]ind" },
+          { "<leader>s", group = "[S]earch" },
+          { "<leader>g", group = "[G]it", icon = git_icon },
+          { "<leader>o", group = "[O]bsidian" },
+          { "<leader>x", group = "Trouble" },
+          { "<leader>w", group = "[W]orkspace" },
+          { "<leader>h", group = "[H]arpoon" },
+          { "<leader>n", group = "[N]otification" },
+        },
+      }
+    end,
   },
   {
     "barrett-ruth/live-server.nvim",
@@ -66,37 +70,16 @@ return {
     "folke/todo-comments.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local tdc = require("todo-comments")
-      tdc.setup()
-
-      vim.keymap.set("n", "]t", function()
-        tdc.jump_next()
-      end, { desc = "Next todo comment" })
-      vim.keymap.set("n", "[t", function()
-        tdc.jump_prev()
-      end, { desc = "Previous todo comment" })
-    end,
-
-    vim.keymap.set("n", "<leader>fc", "<cmd>TodoTelescope<cr>", { desc = "Find todo [c]omments" }),
+    opts = {},
   },
   {
     "uga-rosa/ccc.nvim",
-    lazy = true,
-    -- event = "BufWinEnter",
+    event = "VeryLazy",
     opts = {
       highlighter = {
         auto_enable = true,
       },
     },
-    -- config = function()
-    --   require("ccc").setup({
-    --     highlighter = {
-    --       auto_enable = true,
-    --     },
-    --   })
-    --   vim.keymap.set("n", "<leader>cp", "<cmd>CccPick<cr>", { desc = "Pick color" })
-    -- end,
   },
   {
     "stevearc/dressing.nvim",
@@ -128,7 +111,7 @@ return {
       quickfile = { enabled = true },
       statuscolumn = {
         enabled = true,
-        folds = { open = false },
+        folds = { open = true },
         git = {
           patterns = { "MiniDiffSign", "GitSign" },
         },
@@ -148,8 +131,8 @@ return {
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
       { "<leader>gl", function() Snacks.lazygit.log() end, desc = "Lazygit Log (cwd)" },
       -- words
-      { "]r", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-      { "[r", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+      { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+      { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       {
         "<leader>ttf",
         function()
@@ -186,18 +169,6 @@ return {
     --#NOTE: used for the new version(2024)
     branch = "regexp", -- This is the regexp branch, use this for the new version
     ft = "python",
-    -- keys = {
-    --   -- Keymap to open VenvSelector to pick a venv.
-    --   { "<leader>cvs", "<cmd>VenvSelect<cr>" },
-    --   -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
-    --   { "<leader>cvc", "<cmd>VenvSelectCached<cr>" },
-    --   {
-    --     "<leader>cvp",
-    --     function()
-    --       print(require("venv-selector").venv())
-    --     end,
-    --   },
-    -- },
     config = function()
       require("venv-selector").setup({
         settings = {
@@ -272,12 +243,12 @@ return {
     ft = { "markdown" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "echasnovski/mini.icons",
-      -- "OXY2DEV/markview.nvim",
+      "echasnovski/mini.nvim",
     },
   },
   {
     "ray-x/go.nvim",
+    ft = { "go", "gomod" },
     dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
@@ -287,12 +258,31 @@ return {
       require("go").setup()
     end,
     event = { "CmdlineEnter" },
-    ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
   {
     "pixelneo/vim-python-docstring",
     ft = "python",
     cmd = { "Docstring", "DocstringTypes", "DocstringLine" },
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    init = function()
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    config = function()
+      require("ufo").setup({
+        fold_virt_text_handler = require("extras.ufo").handler,
+        provider_selector = function(_, _, _)
+          return { "treesitter", "indent" }
+        end,
+      })
+      vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
+      vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })
+    end,
   },
 }

@@ -21,30 +21,8 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
-        map(
-          "n",
-          "<leader>gsb",
-          gitsigns.stage_buffer,
-          { desc = "[S]tage [B]uffer" }
-        )
-        map(
-          "n",
-          "<leader>gsh",
-          gitsigns.stage_hunk,
-          { desc = "[S]tage [H]unk" }
-        )
-        map(
-          "n",
-          "<leader>gsu",
-          gitsigns.undo_stage_hunk,
-          { desc = "[U]ndo hunk stage" }
-        )
-        map(
-          "n",
-          "<leader>grh",
-          gitsigns.undo_stage_hunk,
-          { desc = "[U]ndo hunk stage" }
-        )
+        map("n", "<leader>gsb", gitsigns.stage_buffer, { desc = "[S]tage [B]uffer" })
+        map("n", "<leader>gsh", gitsigns.stage_hunk, { desc = "[S]tage [H]unk" })
         map("n", "<leader>hs", gitsigns.stage_hunk)
         map("n", "<leader>hr", gitsigns.reset_hunk)
         map("v", "<leader>hs", function()

@@ -210,6 +210,7 @@ return {
         ruff = {},
         ts_ls = {},
         cssls = {},
+        texlab = {},
         ast_grep = { filetypes = { "html", "css" } },
         spectral = { filetypes = { "json", "yaml" } },
         emmet_ls = {

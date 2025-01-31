@@ -55,7 +55,6 @@ return {
     nmap("<leader>fr", function()
       builtin.oldfiles(require("telescope.themes").get_ivy())
     end, "[R]ecent files")
-    nmap("<leader>fs", require("extras.telescope").live_multigrep, "[S]tring")
     nmap("<leader>fw", function()
       builtin.grep_string(require("telescope.themes").get_ivy())
     end, "[W]ord")
@@ -68,12 +67,20 @@ return {
 
     -- search
     nmap("<leader>sd", function()
-      -- builtin.diagnostics()
-      Snacks.picker.diagnostics()
+      builtin.diagnostics({
+        sorting_strategy = "ascending",
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.5,
+          },
+          width = 0.87,
+          height = 0.80,
+        },
+      })
     end, "[D]iagnostics", "[S]earch ")
-    nmap("<leader>sh", function()
-      Snacks.picker.help()
-    end, "[H]elp Pages", "[S]earch ")
+    nmap("<leader>ss", require("extras.telescope").live_multigrep, "[S]tring", "[S]earch ")
+    nmap("<leader>sh", builtin.help_tags, "[H]elp Pages", "[S]earch ")
     nmap("<leader>sm", function()
       builtin.marks(custom_layout)
     end, "[M]arks", "[S]earch ")

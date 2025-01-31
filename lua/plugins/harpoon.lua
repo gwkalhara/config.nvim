@@ -1,6 +1,7 @@
 return {
   "ThePrimeagen/harpoon",
   branch = "harpoon2",
+  event = "VeryLazy",
   keys = {
     { "<leader>h", desc = "[H]arpoon" },
     { "<leader>hh", desc = "[H]arpoon window" },
@@ -17,7 +18,7 @@ return {
     -- TODO: Remove which-key mapping codeblocks
     -- local wk = require("which-key")
 
-    harpoon.setup({})
+    harpoon.setup({ settings = { save_on_toggle = true } })
 
     -- basic telescope configuration
     local conf = require("telescope.config").values

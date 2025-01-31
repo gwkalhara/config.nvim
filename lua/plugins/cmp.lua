@@ -1,29 +1,3 @@
-local custom_snippest = function()
-  local ls = require("luasnip") -- Load luasnip
-  local s = ls.snippet -- Snippet shorthand
-  local t = ls.text_node -- Text node shorthand
-  local i = ls.insert_node -- Text insert position
-
-  -- INFO: `todo-comments` snippets
-  -- List of styles
-  local styles =
-    { "INFO", "TEST", "BUG", "WARN", "TODO", "PERF", "HACK", "FIX", "ERROR" } -- Iterate through styles and add snippets
-  for _, style in ipairs(styles) do
-    ls.add_snippets("all", {
-      s(style:lower(), {
-        t(style .. ": "),
-        i(0, "comment"),
-      }),
-    })
-  end
-
-  ls.add_snippets("python", {
-    s({ trig = "args kwargs", name = "Func parameters" }, {
-      t("*args, **kwargs"),
-    }),
-  })
-end
-
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
@@ -56,6 +30,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
     "Snikimonkd/cmp-go-pkgs",
+    "micangl/cmp-vimtex",
   },
   config = function()
     local lspkind = require("lspkind")
@@ -70,6 +45,8 @@ return {
         path = "[path]",
         luasnip = "[snip]",
         go_pkgs = "[pkgs]",
+        vimtex = "[tex]",
+        gh_issues = "[gh]",
       },
     })
 
@@ -77,6 +54,8 @@ return {
     local cmp = require("cmp")
     local luasnip = require("luasnip")
     luasnip.config.setup({})
+
+    require("extras.cmp")
 
     cmp.setup({
       window = {
@@ -115,13 +94,15 @@ return {
           -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
           group_index = 0,
         },
-        { name = "go_pkgs" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
+        { name = "gh_issues" },
+        { name = "vimtex" },
+        { name = "go_pkgs" },
         { name = "path" },
       },
     })
-    custom_snippest()
+    require("extras.snippets").load_custom_snippets()
 
     -- INFO: Snippet mappings
     vim.keymap.set({ "i", "s" }, "<C-L>", function()

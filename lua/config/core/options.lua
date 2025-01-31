@@ -32,6 +32,9 @@ local options = {
   sidescrolloff = 8,
   guifont = "CaskaydiaCove NF:h17", -- the font used in graphical neovim applications
   winbar = "%t %m {%L} | %F",
+  foldmethod = "expr",
+  foldexpr = "v:lua.vim.treesitter.foldexpr()",
+  foldlevel = 99,
 }
 
 -- INFO: Config shown in helpdocs to use Powershell as terminal shell

@@ -2,11 +2,9 @@ return {
   "epwalsh/obsidian.nvim",
   version = "*",
   cmd = {
-    "ObsidianFollowLink",
     "ObsidianSearch",
     "ObsidianNew",
-    "ObsidianTemplate",
-    "ObsidianNewFromTemplate",
+    "ObsidianWorkspace",
   },
   ft = "markdown",
   keys = {

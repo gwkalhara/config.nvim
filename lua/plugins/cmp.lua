@@ -5,6 +5,7 @@ return {
     -- Snippet Engine & its associated nvim-cmp source
     {
       "L3MON4D3/LuaSnip",
+      lazy = true,
       build = (function()
         -- Build Step is needed for regex support in snippets.
         -- This step is not supported in many windows environments.
@@ -86,7 +87,7 @@ return {
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<C-Space>"] = cmp.mapping.complete({}),
+        ["<C-s>"] = cmp.mapping.complete({}),
       }),
       sources = {
         {

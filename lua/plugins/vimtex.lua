@@ -1,5 +1,6 @@
 return {
   "lervag/vimtex",
+  version = "*",
   init = function()
     -- vim.g.vimtex_view_method = "general"
     vim.g.vimtex_compiler_method = "latexmk"
@@ -12,6 +13,7 @@ return {
     vim.g.vimtex_compiler_progname = "nvr" -- Neovim remote support
     vim.g.vimtex_compiler_latexmk = {
       build_dir = "build",
+      aux_dir = ".texfiles",
       callback = 1,
       continuous = 1,
       executable = "latexmk",

@@ -95,6 +95,7 @@ return {
   },
   {
     "folke/snacks.nvim",
+    version = "*",
     priority = 1000,
     lazy = false,
     opts = {
@@ -257,7 +258,7 @@ return {
     config = function()
       require("go").setup()
     end,
-    event = { "CmdlineEnter" },
+    -- event = { "CmdlineEnter" },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
   {
@@ -268,6 +269,7 @@ return {
   {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
+    event = "VeryLazy",
     init = function()
       vim.o.foldcolumn = "1"
       vim.o.foldlevel = 99

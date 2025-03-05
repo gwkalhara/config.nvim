@@ -14,7 +14,13 @@ return {
     event = "VeryLazy",
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+      {
+        -- NOTE: Mason must be loaded before dependants
+        "williamboman/mason.nvim",
+        opts = {
+          max_concurrent_installers = 2,
+        },
+      },
       {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
@@ -30,6 +36,8 @@ return {
       -- Allows extra capabilities provided by nvim-cmp
       "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-nvim-lsp",
+
+      "ray-x/go.nvim", -- required to get the `gopls` server settings
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -161,7 +169,7 @@ return {
       -- INFO: Special setup for gopls
       -- `go.nvim` overides mappings when running on_attach functions
       -- the fields have to be seperately passed
-      local gopls_config = require("go.lsp").config()
+      local _, gopls_config = pcall(require("go.lsp").config)
       if gopls_config == nil then
         gopls_config = {
           cmd = { "gopls" },
@@ -207,8 +215,8 @@ return {
           },
         },
         gopls = gopls_config,
-        pyright = {},
-        ruff = {},
+        pyright = { filetypes = "python" },
+        ruff = { filetypes = "python" },
         ts_ls = {},
         cssls = {},
         texlab = {},

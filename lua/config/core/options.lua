@@ -59,9 +59,6 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
--- BUG: the view works, but the behavior is abnormal
-vim.cmd("let g:netrw_liststyle = 3") -- set netrw to tree view
-
 vim.g.python3_host_prog = "C:/Users/Hp/miniconda3/python.exe"
 vim.g.loaded_perl_provider = 0
 
@@ -69,48 +66,12 @@ vim.cmd("set whichwrap+=<,>,[,],h,l")
 vim.cmd([[set iskeyword+=-]])
 vim.cmd([[set formatoptions-=cro]])
 
-vim.fn.setreg("g", [[s/\(\u\w\+\)\s\+\(\w\+\)/\1 \2 `json:"\l\1"`]])
-
 -- INFO: custom commands
 vim.api.nvim_create_user_command("CCmdFormatBuffer", function()
   require("conform").format()
 end, { desc = "Format buffer with conform" })
 
-vim.api.nvim_create_user_command("CCmdWingetFormat", function()
-  -- delete unwanted app entries first
-  vim.cmd([[g/libreoffice/d _]])
-  vim.cmd([[g/teamviewer/d _]])
-  vim.cmd([[g/java/d _]])
-  vim.cmd([[g/edge/d _]])
-  vim.cmd([[g/Miniconda3/d _]])
-  vim.cmd([[g/app installer/d _]])
-  vim.cmd([[g/sql/d _]])
-  vim.cmd([[g/bonjour/d _]])
-
-  -- perform the formatting with globals and substitutions
-  vim.cmd("/---")
-  vim.cmd("normal! dgg")
-  vim.cmd("normal G")
-  vim.cmd("normal! dk")
-  vim.cmd("%s/…/ /g")
-  vim.cmd([[/\w\+\ \w\+\ \ \ ]])
-  vim.cmd("normal WW")
-  vim.cmd("normal Gh")
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-v>", true, false, true), "n", true)
-
-  -- Delay moving the cursor to ensure visual mode is active
-  vim.defer_fn(function()
-    vim.api.nvim_win_set_cursor(0, { 1, 0 }) -- Move to the first line, first column
-    vim.cmd("normal! d")
-    vim.cmd([[%s/\(\S\+\).*/winget upgrade --id "\1"]])
-    vim.notify("Formatted Winget entries")
-  end, 20) -- Delay in milliseconds
-end, { desc = "Format Winget entries" })
-
 vim.api.nvim_create_user_command("CcmdToggleWhitespace", function()
   ---@diagnostic disable-next-line: undefined-field
   vim.opt.list = not vim.opt.list:get()
 end, {})
-
--- BUG: there is a bug related to treesitter, the following is a temporary fix (https://github.com/neovim/neovim/issues/31675)
-vim.hl = vim.highlight

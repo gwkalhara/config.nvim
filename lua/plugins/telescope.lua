@@ -7,7 +7,6 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     -- "nvim-telescope/telescope-fzy-native.nvim",
   },
-  event = "VeryLazy",
   config = function()
     require("telescope").setup({
       defaults = {
@@ -55,9 +54,6 @@ return {
     nmap("<leader>fr", function()
       builtin.oldfiles(require("telescope.themes").get_ivy())
     end, "[R]ecent files")
-    nmap("<leader>fw", function()
-      builtin.grep_string(require("telescope.themes").get_ivy())
-    end, "[W]ord")
     nmap("<leader>fg", "<cmd>Telescope git_status<cr>", "[G]it files(changed)")
     nmap("<leader>fG", "<cmd>Telescope git_files<cr>", "[G]it files(all)")
     nmap("<leader>ft", "<cmd>Telescope treesitter<cr>", "[T]reesitter tags")

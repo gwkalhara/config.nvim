@@ -2,10 +2,12 @@ return {
   "nvim-treesitter/nvim-treesitter",
   lazy = false,
   build = ":TSUpdate",
+  dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
   config = function()
     require("nvim-treesitter.configs").setup({
       -- a list of parser names, or "all" (the five listed parsers should always be installed)
-      ensure_installed = {
+
+      ensure_installed = { -- {{{
         -- mandatory parsers
         "c",
         "lua",
@@ -26,6 +28,7 @@ return {
         "yaml",
         "json",
       },
+      -- }}}
 
       sync_install = false,
       auto_install = true,
@@ -37,6 +40,33 @@ return {
       playground = { enable = true },
       incremental_selection = { enable = false },
       indent = { enable = true },
+
+      textobjects = {
+        select = {
+          enable = true,
+          keymaps = {
+            ["iS"] = "@statement.inner",
+            ["aS"] = "@statement.outer",
+            ["if"] = "@function.inner",
+            ["af"] = "@function.outer",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ["<leader>a"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<leader>A"] = "@parameter.inner",
+          },
+        },
+        move = {
+          enable = true,
+          goto_next_start = {
+            ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+          },
+        },
+      },
     })
   end,
 }

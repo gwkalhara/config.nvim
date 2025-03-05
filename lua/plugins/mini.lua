@@ -10,18 +10,14 @@ return {
     require("mini.diff").setup()
     require("mini.icons").setup()
     require("mini.files").setup()
-    require("mini.bracketed").setup({})
-
-    local disabled_mappings = {
-      { "n", "[f" },
-      { "n", "[F" },
-      { "n", "]f" },
-      { "n", "]F" },
-    }
-
-    for _, maps in ipairs(disabled_mappings) do
-      vim.keymap.del(maps[1], maps[2])
-    end
+    require("mini.bracketed").setup({
+      file = { suffix = "", options = {} },
+      yank = { suffix = "", options = {} },
+      jump = { suffix = "", options = {} },
+      oldfile = { suffix = "", options = {} },
+      undo = { suffix = "", options = {} },
+      indent = { suffix = "", options = {} },
+    })
 
     vim.keymap.set("n", "<leader>\\", function()
       if not MiniFiles.close() then

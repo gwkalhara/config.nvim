@@ -2,6 +2,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
+    version = "*",
     opts = {
       signs = {
         signcoloumn = true, -- signcoloumn is handled by `Snacks.nvim` & `mini.diff`

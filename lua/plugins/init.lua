@@ -55,7 +55,7 @@ return {
   {
     "jiaoshijie/undotree",
     dependencies = "nvim-lua/plenary.nvim",
-    config = true,
+    opts = {},
     keys = {
       {
         "<leader>u",
@@ -211,6 +211,7 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    version = "*",
     opts = {
       checkbox = {
         custom = {

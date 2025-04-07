@@ -12,6 +12,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
+    version = "*",
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       {

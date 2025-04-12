@@ -2,6 +2,7 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
+    "AndreM222/copilot-lualine",
   },
   init = function() -- adapted from https://www.lazyvim.org/plugins/ui#lualinenvim
     vim.g.lualine_laststatus = vim.o.laststatus
@@ -70,6 +71,7 @@ return {
           cond = require("lazy.status").has_updates,
           color = { fg = "#15161E" },
         },
+        "copilot",
         "location",
         "progress",
       },

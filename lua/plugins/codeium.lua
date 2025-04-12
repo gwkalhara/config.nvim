@@ -3,6 +3,7 @@ return {
   -- "monkoose/neocodeium",
   "gwkalhara/neocodeium.clone",
   event = "VeryLazy",
+  enabled = false,
   -- lazy = true,
   config = function()
     local neocodeium = require("neocodeium")

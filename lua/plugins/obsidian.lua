@@ -1,19 +1,15 @@
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*",
-  cmd = {
-    "ObsidianSearch",
-    "ObsidianNew",
-    "ObsidianWorkspace",
-  },
+  cmd = { "Obsidian" },
   ft = "markdown",
   keys = {
-    { "<leader>on", mode = "n", "<cmd>ObsidianNew<cr>", desc = "[O]bsidian [N]ew" },
-    { "<leader>of", mode = "n", "<cmd>ObsidianSearch<cr>", desc = "[O]bsidian [S]earch" },
-    { "<leader>ob", mode = "n", "<cmd>ObsidianBacklinks<cr>", desc = "[O]bsidian [B]ackLinks" },
-    { "<leader>ot", mode = "n", "<cmd>ObsidianTags<cr>", desc = "[O]bsidian [T]ags" },
-    { "<leader>ow", mode = "n", "<cmd>ObsidianWorkspace<cr>", desc = "[O]bsidian [W]orkspace" },
-    { "<leader>oc", mode = "n", "<cmd>ObsidianToggleCheckbox<cr>", desc = "[O]bsidian Toggle[C]heckbox" },
+    { "<leader>on", mode = "n", "<cmd>Obsidian new<cr>", desc = "[O]bsidian [N]ew" },
+    { "<leader>of", mode = "n", "<cmd>Obsidian search<cr>", desc = "[O]bsidian [S]earch" },
+    { "<leader>ob", mode = "n", "<cmd>Obsidian backlinks<cr>", desc = "[O]bsidian [B]ackLinks" },
+    { "<leader>ot", mode = "n", "<cmd>Obsidian tags<cr>", desc = "[O]bsidian [T]ags" },
+    { "<leader>ow", mode = "n", "<cmd>Obsidian workspace<cr>", desc = "[O]bsidian [W]orkspace" },
+    { "<leader>oc", mode = "n", "<cmd>Obsidian toggle_checkbox<cr>", desc = "[O]bsidian Toggle[C]heckbox" },
   },
   dependencies = {
     -- Required.
@@ -58,6 +54,9 @@ return {
         end,
         opts = { buffer = true, expr = true },
       },
+    },
+    statusline = {
+      format = "{{backlinks}} backlinks",
     },
   },
 }

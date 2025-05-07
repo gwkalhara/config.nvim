@@ -213,6 +213,7 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     version = "*",
     opts = {
+      code = { style = "full" },
       checkbox = {
         custom = {
           warn = {

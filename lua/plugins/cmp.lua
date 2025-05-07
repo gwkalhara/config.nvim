@@ -96,10 +96,10 @@ return {
           group_index = 0,
         },
         { name = "nvim_lsp" },
+        { name = "go_pkgs" },
         { name = "luasnip" },
         { name = "gh_issues" },
         { name = "vimtex" },
-        { name = "go_pkgs" },
         { name = "path" },
       },
     })

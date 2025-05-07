@@ -29,4 +29,5 @@ require("lazy").setup({
     enabled = true,
     notify = false,
   },
+  throttle = { enabled = true },
 })

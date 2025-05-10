@@ -83,20 +83,20 @@ return {
     nmap("<leader>sq", function()
       builtin.quickfix(custom_layout)
     end, "[Q]uickfix List", "[S]earch ")
-
-    nmap("<leader>/", function()
-      builtin.current_buffer_fuzzy_find({ previewer = false })
-    end, "Fuzzy find pattern")
-
-    nmap("<leader>fC", function()
-      builtin.find_files({
+    nmap("<leader>sc", function()
+      -- builtin.live_grep({
+      require("extras.telescope").live_multigrep({
         cwd = vim.fn.stdpath("config"),
         sorting_strategy = "ascending",
         layout_strategy = "bottom_pane",
         prompt_title = "Config files",
         layout_config = { preview_width = 0.5 },
       })
-    end, "[N]eovim [C]onfig files")
+    end, "[C]onfig files", "[S]earch ")
+
+    nmap("<leader>/", function()
+      builtin.current_buffer_fuzzy_find({ previewer = false })
+    end, "Fuzzy find pattern")
     nmap("<leader>fP", function()
       builtin.find_files({
         ---@diagnostic disable-next-line: param-type-mismatch

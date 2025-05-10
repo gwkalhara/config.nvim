@@ -202,50 +202,50 @@ return {
       end
 
       -- INFO: Servers are defined here
-      local servers = {
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = "Replace",
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { "missing-fields" } },
-            },
-          },
-        },
-        gopls = gopls_config,
-        pyright = { filetypes = "python" },
-        ruff = { filetypes = "python" },
-        ts_ls = {},
-        cssls = {},
-        texlab = {},
-        ast_grep = { filetypes = { "html", "css" } },
-        spectral = { filetypes = { "json", "yaml" } },
-        emmet_ls = {
-          init_options = {
-            html = { options = { ["bem.enabled"] = true } },
-          },
-          filetypes = {
-            "css",
-            "eruby",
-            "html",
-            "htmldjango",
-            "javascript",
-            "javascriptreact",
-            "less",
-            "sass",
-            "scss",
-            "svelte",
-            "pug",
-            "typescriptreact",
-            "vue",
-          },
-        },
-      }
+      -- local servers = {
+      -- lua_ls = {
+      --   -- cmd = { ... },
+      --   -- filetypes = { ... },
+      --   -- capabilities = {},
+      --   settings = {
+      --     Lua = {
+      --       completion = {
+      --         callSnippet = "Replace",
+      --       },
+      --       -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      --       diagnostics = { disable = { "missing-fields" } },
+      --     },
+      --   },
+      -- },
+      -- gopls = gopls_config,
+      --   pyright = { filetypes = "python" },
+      --   ruff = { filetypes = "python" },
+      --   ts_ls = {},
+      --   cssls = {},
+      --   texlab = {},
+      --   ast_grep = { filetypes = { "html", "css" } },
+      --   spectral = { filetypes = { "json", "yaml" } },
+      --   emmet_ls = {
+      --     init_options = {
+      --       html = { options = { ["bem.enabled"] = true } },
+      --     },
+      --     filetypes = {
+      --       "css",
+      --       "eruby",
+      --       "html",
+      --       "htmldjango",
+      --       "javascript",
+      --       "javascriptreact",
+      --       "less",
+      --       "sass",
+      --       "scss",
+      --       "svelte",
+      --       "pug",
+      --       "typescriptreact",
+      --       "vue",
+      --     },
+      --   },
+      -- }
 
       require("mason").setup()
 
@@ -268,7 +268,67 @@ return {
       })
 
       ---@diagnostic disable-next-line: missing-fields
-      require("mason-lspconfig").setup({})
+      require("mason-lspconfig").setup({ automatic_enable = true })
+
+      -- setup servers with new api
+      vim.lsp.config.lua_ls = {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        ---@diagnostic disable-next-line: undefined-field
+        root_markers = { ".luarc.json", ".git", vim.uv.cwd() },
+        settings = {
+          Lua = {
+            telemetry = {
+              enable = false,
+            },
+            completion = {
+              callSnippet = "Replace",
+            },
+            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            diagnostics = { disable = { "missing-fields" } },
+          },
+        },
+      }
+      vim.lsp.enable("lua_ls")
+
+      vim.lsp.config.gopls = gopls_config
+      vim.lsp.enable("gopls")
+
+      vim.lsp.config.pyright = { filetypes = "python" }
+      vim.lsp.enable("pyright")
+
+      vim.lsp.config.ruff = { filetypes = "python" }
+      vim.lsp.enable("ruff")
+
+      vim.lsp.enable("ts_ls")
+      vim.lsp.enable("cssls")
+      vim.lsp.enable("texlab")
+
+      vim.lsp.config.ast_grep = { filetypes = { "html", "css" } }
+      vim.lsp.enable("ast_grep")
+
+      vim.lsp.config.spectral = { filetypes = { "json", "yaml" } }
+      vim.lsp.enable("spectral")
+
+      vim.lsp.config.emmet_ls = {
+        init_options = { html = { options = { ["bem.enabled"] = true } } },
+        filetypes = {
+          "css",
+          "eruby",
+          "html",
+          "htmldjango",
+          "javascript",
+          "javascriptreact",
+          "less",
+          "sass",
+          "scss",
+          "svelte",
+          "pug",
+          "typescriptreact",
+          "vue",
+        },
+      }
+      vim.lsp.enable("emmet_ls")
     end,
   },
 }

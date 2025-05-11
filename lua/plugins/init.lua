@@ -269,6 +269,14 @@ return {
     cmd = { "Docstring", "DocstringTypes", "DocstringLine" },
   },
   {
+    "TheLeoP/powershell.nvim",
+    ---@type powershell.user_config
+    ft = "ps1",
+    opts = {
+      bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services",
+    },
+  },
+  {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     event = "VeryLazy",

@@ -30,7 +30,7 @@ return {
       },
       {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        dependencies = { "mason-org/mason.nvim" },
       },
 
       -- Useful status updates for LSP.
@@ -269,6 +269,11 @@ return {
 
       ---@diagnostic disable-next-line: missing-fields
       require("mason-lspconfig").setup({ automatic_enable = true })
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
+
+      -- TODO: look into this:: https://github.com/NTBBloodbath/nvim/blob/main/lua/core/lsp.lua
 
       -- setup servers with new api
       vim.lsp.config.lua_ls = {

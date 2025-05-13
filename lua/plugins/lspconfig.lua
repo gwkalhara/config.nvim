@@ -299,8 +299,31 @@ return {
       vim.lsp.config.gopls = gopls_config
       vim.lsp.enable("gopls")
 
-      vim.lsp.config.pyright = { filetypes = "python" }
-      vim.lsp.enable("pyright")
+      vim.lsp.config.basedpyright = {
+        name = "basedpyright",
+        filetypes = { "python" },
+        cmd = { "basedpyright-langserver", "--stdio" },
+        settings = {
+          -- python = { venvPath = vim.fn.expand("~") .. "/.virtualenvs", },
+          basedpyright = {
+            disableOrganizeImports = true,
+            analysis = {
+              autoSearchPaths = true,
+              autoImportCompletions = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "openFilesOnly",
+              typeCheckingMode = "strict",
+              inlayHints = {
+                variableTypes = true,
+                callArgumentNames = true,
+                functionReturnTypes = true,
+                genericTypes = false,
+              },
+            },
+          },
+        },
+      }
+      vim.lsp.enable("basedpyright")
 
       vim.lsp.config.ruff = { filetypes = "python" }
       vim.lsp.enable("ruff")

@@ -59,8 +59,9 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
-vim.g.python3_host_prog = "C:/Users/Hp/miniconda3/python.exe"
+vim.g.python3_host_prog = "C:/Users/Hp/.venvs/nvim/Scripts/python.exe"
 vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 vim.cmd("set whichwrap+=<,>,[,],h,l")
 vim.cmd([[set iskeyword+=-]])

@@ -18,10 +18,6 @@ return {
         lsp_format_opt = "fallback"
       end
 
-      if vim.bo[bufnr].filetype == "python" then
-        vim.cmd("PyrightOrganizeImports")
-      end
-
       return {
         timeout_ms = 5000,
         lsp_format = lsp_format_opt,

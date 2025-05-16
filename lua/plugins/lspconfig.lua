@@ -30,11 +30,17 @@ return {
       },
       {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        dependencies = { "mason-org/mason.nvim" },
       },
 
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
+      {
+        "TheLeoP/powershell.nvim",
+        opts = {
+          bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services",
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       "hrsh7th/nvim-cmp",
@@ -50,6 +56,12 @@ return {
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
+
+          -- Disable default keybinds {{{
+          -- for _, bind in ipairs({ "grn", "gra", "gri", "grr" }) do
+          --   vim.keymap.del("n", bind)
+          -- end
+          -- }}}
 
           -- INFO: These mappings are taken from `kickstart.nvim`
           -- need to replace them if necessary.
@@ -201,34 +213,135 @@ return {
         }
       end
 
-      -- INFO: Servers are defined here
+      --- Servers {{{
       local servers = {
+        -- Lua {{{
         lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
+          cmd = { "lua-language-server" },
+          root_markers = {
+            ".luarc.json",
+            ".luarc.jsonc",
+            ".luacheckrc",
+            ".stylua.toml",
+            "stylua.toml",
+            "selene.toml",
+            "selene.yml",
+            ".git",
+            ---@diagnostic disable-next-line undefined-field
+            vim.uv.cwd(), -- equivalent of `single_file_mode` in lspconfig
+          },
+          filetypes = { "lua" },
+          on_init = function(client)
+            local path = client.workspace_folders and client.workspace_folders[1].name or "."
+            ---@diagnostic disable-next-line undefined-field
+            if vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc") then
+              return
+            end
+
+            client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+              runtime = {
+                -- Tell the language server which version of Lua you're using
+                -- (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+              },
+              hint = {
+                enable = true,
+              },
+              diagnostics = {
+                globals = { "_G", "vim" },
+              },
+              -- Make the server aware of Neovim runtime files
+              workspace = {
+                preloadFileSize = 500,
+                checkThirdParty = false,
+                -- library = {
+                --   vim.env.VIMRUNTIME
+                -- }
+                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                library = vim.api.nvim_get_runtime_file("", true),
+              },
+            })
+          end,
           settings = {
             Lua = {
+              telemetry = {
+                enable = false,
+              },
               completion = {
                 callSnippet = "Replace",
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               diagnostics = { disable = { "missing-fields" } },
             },
           },
         },
-        gopls = gopls_config,
-        pyright = { filetypes = "python" },
-        ruff = { filetypes = "python" },
-        ts_ls = {},
-        cssls = {},
-        texlab = {},
-        ast_grep = { filetypes = { "html", "css" } },
-        spectral = { filetypes = { "json", "yaml" } },
-        emmet_ls = {
-          init_options = {
-            html = { options = { ["bem.enabled"] = true } },
+        --- }}}
+        --- basedpyright {{{
+        basedpyright = {
+          name = "basedpyright",
+          filetypes = { "python" },
+          cmd = { "basedpyright-langserver", "--stdio" },
+          settings = {
+            basedpyright = {
+              disableOrganizeImports = true,
+              analysis = {
+                autoSearchPaths = true,
+                autoImportCompletions = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "openFilesOnly",
+                typeCheckingMode = "strict",
+                inlayHints = {
+                  variableTypes = true,
+                  callArgumentNames = true,
+                  functionReturnTypes = true,
+                  genericTypes = false,
+                },
+              },
+            },
           },
+        },
+        --- }}}
+        --- gopls {{{
+        gopls = {
+          cmd = { "gopls" },
+          filetypes = { "go", "gotempl", "gowork", "gomod" },
+          root_markers = { ".git", "go.mod", "go.work", vim.uv.cwd() },
+          settings = {
+            gopls = {
+              completeUnimported = true,
+              usePlaceholders = true,
+              analyses = {
+                unusedparams = true,
+              },
+              ["ui.inlayhint.hints"] = {
+                compositeLiteralFields = true,
+                constantValues = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+            },
+          },
+        },
+        --- }}}
+        -- HTML {{{
+        -- NOTE: installed with 'npm i -g vscode-langservers-extracted'
+        -- htmlls = {
+        --   name = "html",
+        --   cmd = { "vscode-html-language-server", "--stdio" },
+        --   root_markers = { "package.json", ".git" },
+        --   filetypes = { "html", "templ" },
+        --   init_options = {
+        --     configurationSection = { "html", "css", "javascript" },
+        --     embeddedLanguages = {
+        --       css = true,
+        --       javascript = true,
+        --     },
+        --     provideFormatter = true,
+        --   },
+        -- },
+        -- }}}
+        --- emmet_ls {{{
+        emmet_ls = {
+          init_options = { html = { options = { ["bem.enabled"] = true } } },
           filetypes = {
             "css",
             "eruby",
@@ -245,8 +358,13 @@ return {
             "vue",
           },
         },
+        --- }}}
+        ruff = { filetypes = { "python" } },
+        ts_ls = {},
+        texlab = {},
+        spectral = {},
       }
-
+      --- }}}
       require("mason").setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -267,8 +385,18 @@ return {
         start_delay = 10000,
       })
 
-      ---@diagnostic disable-next-line: missing-fields
-      require("mason-lspconfig").setup({})
+      require("mason-lspconfig").setup({ automatic_enable = true })
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
+
+      local server_names = vim.tbl_keys(servers)
+      -- Iterate over all the server names and add them to the `vim.lsp.config` table.
+      for _, server_name in ipairs(server_names) do
+        vim.lsp.config[server_name] = servers[server_name]
+      end
+
+      vim.lsp.enable(server_names)
     end,
   },
 }

@@ -17,6 +17,7 @@ return {
       oldfile = { suffix = "", options = {} },
       undo = { suffix = "", options = {} },
       indent = { suffix = "", options = {} },
+      buffer = { suffix = "", options = {} },
     })
 
     vim.keymap.set("n", "<leader>\\", function()

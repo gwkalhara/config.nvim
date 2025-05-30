@@ -1,6 +1,10 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   lazy = false,
+  -- WARN: the master branch is `stuck` and won't recieve updates
+  -- have to move to the new `main` branch which is a rewrite
+  -- https://github.com/nvim-treesitter/nvim-treesitter/commit/42fc28ba918343ebfd5565147a42a26580579482
+  branch = "master",
   build = ":TSUpdate",
   dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
   config = function()

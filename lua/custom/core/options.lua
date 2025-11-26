@@ -1,9 +1,7 @@
 local options = {
   backup = false, -- creates a backup file
-
   -- INFO: special behaviour will be implemented when using  `obsidian.nvim`
   conceallevel = 0, -- so that `` is visible in markdown files
-
   fileencoding = "utf-8", -- the encoding written to a file
   spelllang = "en_us",
   hlsearch = true, -- highlight all matches on previous search pattern
@@ -15,7 +13,7 @@ local options = {
   splitbelow = true, -- force all horizontal splits to go below current window
   splitright = true, -- force all vertical splits to go to the right of current window
   swapfile = false, -- creates a swapfile
-  timeoutlen = 1000, -- time to wait for a mapped sequence to complete (in milliseconds)
+  timeoutlen = 500, -- time to wait for a mapped sequence to complete (in milliseconds)
   undofile = true, -- enable persistent undo
   updatetime = 300, -- faster completion (4000ms default)
   writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited

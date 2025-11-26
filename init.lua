@@ -1,7 +1,5 @@
-require("config.core.options")
-require("config.core.mappings")
-require("config.core.autocmd")
+require("custom.core.options")
+require("custom.core.keymaps")
 
-require("config.lazy")
-
-require("extras")
+require("custom.core.lazy")
+require("custom.core.autocommands")

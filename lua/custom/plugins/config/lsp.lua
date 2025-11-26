@@ -1,4 +1,6 @@
-return {
+local Lsp = {}
+
+Lsp.spec = {
   {
     "folke/lazydev.nvim",
     ft = "lua",
@@ -10,28 +12,135 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
-    event = "VeryLazy",
-    version = "*",
+    "saghen/blink.cmp",
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
+      "onsails/lspkind.nvim",
       {
-        -- NOTE: Mason must be loaded before dependants
-        "mason-org/mason.nvim",
-        version = "*",
-        opts = {
-          max_concurrent_installers = 2,
+        "L3MON4D3/LuaSnip",
+        lazy = true,
+        build = (function()
+          -- Build Step is needed for regex support in snippets.
+          -- This step is not supported in many windows environments.
+          -- Remove the below condition to re-enable on windows.
+          if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+            return
+          end
+          return "make install_jsregexp"
+        end)(),
+        dependencies = {
+          {
+            "rafamadriz/friendly-snippets",
+            config = function()
+              require("luasnip.loaders.from_vscode").lazy_load()
+            end,
+          },
+        },
+        config = function()
+          require("custom.plugins.config.snippets").load_custom_snippets()
+          require("luasnip.loaders.from_snipmate").load({
+            paths = vim.fn.stdpath("config") .. "\\snippets\\tex.snippets",
+          })
+
+          -- INFO: Snippet mappings
+          vim.keymap.set({ "i", "s" }, "<C-L>", function()
+            require("luasnip").jump(1)
+          end, { silent = true })
+          vim.keymap.set({ "i", "s" }, "<C-J>", function()
+            require("luasnip").jump(-1)
+          end, { silent = true })
+        end,
+      },
+    },
+    version = "1.*",
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        preset = "super-tab",
+
+        ["<Tab>"] = { "accept" },
+      },
+      snippets = { preset = "luasnip" },
+      appearance = { nerd_font_variant = "mono" },
+
+      -- (Default) Only show the documentation popup when manually triggered
+      completion = {
+        documentation = { auto_show = true },
+        menu = {
+          draw = {
+            components = {
+              kind_icon = {
+                text = function(ctx)
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local mini_icon, _ = require("mini.icons").get_icon(ctx.item.data.type, ctx.label)
+                    if mini_icon then
+                      return mini_icon .. ctx.icon_gap
+                    end
+                  end
+
+                  local icon = require("lspkind").symbolic(ctx.kind, { mode = "symbol" })
+                  return icon .. ctx.icon_gap
+                end,
+
+                -- Optionally, use the highlight groups from mini.icons
+                -- You can also add the same function for `kind.highlight` if you want to
+                -- keep the highlight groups in sync with the icons.
+                highlight = function(ctx)
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local mini_icon, mini_hl = require("mini.icons").get_icon(ctx.item.data.type, ctx.label)
+                    if mini_icon then
+                      return mini_hl
+                    end
+                  end
+                  return ctx.kind_hl
+                end,
+              },
+              kind = {
+                -- Optional, use highlights from mini.icons
+                highlight = function(ctx)
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local mini_icon, mini_hl = require("mini.icons").get_icon(ctx.item.data.type, ctx.label)
+                    if mini_icon then
+                      return mini_hl
+                    end
+                  end
+                  return ctx.kind_hl
+                end,
+              },
+            },
+          },
         },
       },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { "lazydev", "lsp", "snippets", "path", "buffer" },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100,
+          },
+        },
+      },
+      fuzzy = { implementation = "lua" },
+    },
+    opts_extend = { "sources.default" },
+  },
+  {
+    "mason-org/mason.nvim",
+    version = "*",
+    opts = {
+      max_concurrent_installers = 2,
+    },
+    dependencies = {
       {
         "mason-org/mason-lspconfig.nvim",
         version = "*",
         dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
       },
-      {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        dependencies = { "mason-org/mason.nvim" },
-      },
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
 
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
@@ -42,13 +151,9 @@ return {
         },
       },
 
-      -- Allows extra capabilities provided by nvim-cmp
-      "hrsh7th/nvim-cmp",
-      "hrsh7th/cmp-nvim-lsp",
-
       "ray-x/go.nvim", -- required to get the `gopls` server settings
     },
-    config = function()
+    config = function(_, opts)
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
         callback = function(event)
@@ -56,12 +161,6 @@ return {
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
-
-          -- Disable default keybinds {{{
-          -- for _, bind in ipairs({ "grn", "gra", "gri", "grr" }) do
-          --   vim.keymap.del("n", bind)
-          -- end
-          -- }}}
 
           -- INFO: These mappings are taken from `kickstart.nvim`
           -- need to replace them if necessary.
@@ -94,12 +193,12 @@ return {
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+          map("<leader>ds", Snacks.picker.lsp_symbols, "[D]ocument [S]ymbols")
 
           -- TODO: Workspaces doesn't seem to work properly, might have to remove this mapping
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+          map("<leader>ws", Snacks.picker.lsp_workspace_symbols, "[W]orkspace [S]ymbols")
           map("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd folder")
           map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove folder")
           map("<leader>wl", function()
@@ -179,7 +278,7 @@ return {
       -- end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      -- capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
       -- INFO: Special setup for gopls
       -- `go.nvim` overides mappings when running on_attach functions
@@ -189,7 +288,7 @@ return {
         gopls_config = {
           cmd = { "gopls" },
           filetypes = { "go", "gomod", "gowork", "gotmpl" },
-          root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
+          -- root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
           settings = {
             gopls = {
               completeUnimported = true,
@@ -209,7 +308,7 @@ return {
           handlers = gopls_config.handlers,
           message_level = gopls_config.message_level,
           settings = gopls_config.settings,
-          root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
+          -- root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
         }
       end
 
@@ -365,7 +464,7 @@ return {
         spectral = {},
       }
       --- }}}
-      require("mason").setup()
+      require("mason").setup(opts)
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
@@ -400,3 +499,4 @@ return {
     end,
   },
 }
+return Lsp

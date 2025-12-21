@@ -39,9 +39,21 @@ end
 
 Snippets._python = function()
   ls.add_snippets("python", {
-    s({ trig = "args kwargs", name = "Func parameters" }, {
-      t("*args, **kwargs"),
-    }),
+    s({ trig = "args kwargs", name = "Func parameters", wordTrig = false }, { t("*args, **kwargs") }),
+
+    s(
+      { trig = "##", name = "Doc strings" },
+      fmt(
+        [[
+"""{docstring}"""
+{final}
+]],
+        {
+          docstring = i(1, "docstring"),
+          final = i(0),
+        }
+      )
+    ),
   })
 end
 

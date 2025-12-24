@@ -28,6 +28,8 @@ Treesitter.config = function()
     },
     -- }}}
 
+    ignore_install = { "latex" },
+
     sync_install = false,
     auto_install = true,
     highlight = {
@@ -65,6 +67,13 @@ Treesitter.config = function()
     --     },
     --   },
     -- },
+  })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "tex", "latex" },
+    callback = function()
+      vim.treesitter.stop()
+    end,
   })
 end
 

@@ -58,7 +58,7 @@ Lsp.spec = {
       keymap = {
         preset = "super-tab",
 
-        ["<Tab>"] = { "accept" },
+        ["<Tab>"] = { "accept", "fallback" },
       },
       snippets = { preset = "luasnip" },
       appearance = { nerd_font_variant = "mono" },

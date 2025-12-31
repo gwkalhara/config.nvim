@@ -9,7 +9,9 @@ Obsidian.keys = {
 }
 Obsidian.dependencies = {
   "nvim-lua/plenary.nvim",
-  "nvim-treesitter/nvim-treesitter",
+
+  -- WARN: This is a temporary patch to work around the curl ssl certificate issue
+  "gwkalhara/nvim-treesitter",
 }
 Obsidian.opts = {
   -- templates = { folder = "templates", date_format = "%Y-%m-%d-%a", time_format = "%H:%M", },

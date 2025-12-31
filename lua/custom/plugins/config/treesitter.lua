@@ -1,80 +1,28 @@
 local Treesitter = {}
 
-Treesitter.config = function()
-  require("nvim-treesitter.configs").setup({
-    -- a list of parser names, or "all" (the five listed parsers should always be installed)
+Treesitter.config = function(_, opts)
+  local parsers = {
+    "python",
+    "go",
+    "lua",
 
-    ensure_installed = { -- {{{
-      -- mandatory parsers
-      "c",
-      "lua",
-      "vim",
-      "vimdoc",
-      "query",
-      "markdown",
-      "markdown_inline",
-      "gitcommit",
+    "json",
+    "toml",
 
-      -- my parsers
-      "python",
-      "go",
-      "toml",
-      "javascript",
-      "typescript",
-      "html",
-      "css",
-      "yaml",
-      "json",
-    },
-    -- }}}
+    "gitcommit",
+    "git_rebase",
+  },
 
-    ignore_install = { "latex" },
 
-    sync_install = false,
-    auto_install = true,
-    highlight = {
-      enable = true,
-      disable = { "latex" },
-      additional_vim_regex_highlighting = false,
-    },
-    -- playground = { enable = true },
-    incremental_selection = { enable = false },
-    indent = { enable = true },
+  require("nvim-treesitter").setup(opts)
+  require("nvim-treesitter").install(parsers, {max_jobs=1})
 
-    -- textobjects = {
-    --   select = {
-    --     enable = true,
-    --     keymaps = {
-    --       ["iS"] = "@statement.inner",
-    --       ["aS"] = "@statement.outer",
-    --       ["if"] = "@function.inner",
-    --       ["af"] = "@function.outer",
-    --     },
-    --   },
-    --   swap = {
-    --     enable = true,
-    --     swap_next = {
-    --       ["<leader>a"] = "@parameter.inner",
-    --     },
-    --     swap_previous = {
-    --       ["<leader>A"] = "@parameter.inner",
-    --     },
-    --   },
-    --   move = {
-    --     enable = true,
-    --     goto_next_start = {
-    --       ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-    --     },
-    --   },
-    -- },
-  })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "tex", "latex" },
-    callback = function()
-      vim.treesitter.stop()
-    end,
-  })
+  -- vim.api.nvim_create_autocmd("FileType", {
+  --   pattern = { "tex", "latex" },
+  --   callback = function()
+  --     vim.treesitter.stop()
+  --   end,
+  -- })
 end
 
 return Treesitter

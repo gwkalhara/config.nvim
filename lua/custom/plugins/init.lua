@@ -265,6 +265,8 @@ M.plugins = {
     opts = require("custom.plugins.config.obsidian").opts,
   },
   require("custom.plugins.config.latex").spec,
+
+  require("custom.plugins.dev").custom,
 }
 
 return M

@@ -16,4 +16,4 @@ session.*
 
 plugin_
 lazy-lock.json
-lua/plugins/dev.lua
+lua/custom/plugins/dev.lua

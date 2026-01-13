@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Enable treesitter highlighting
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "go", "python", "sql", "git*" },
+  pattern = require("nvim-treesitter").get_installed(),
   callback = function(ev)
     vim.treesitter.start(ev.buf)
   end,

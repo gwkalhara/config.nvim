@@ -19,7 +19,14 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = require("custom.plugins").plugins,
   install = { colorscheme = { "tokyonight" } },
-  checker = { enabled = true, notify = false },
+  checker = {
+    enabled = function()
+      local now = os.date("*t")
+      local minutes = now.hour * 60 + now.min
+      return minutes >= 1 and minutes <= (7 * 60 + 59)
+    end,
+    notify = false,
+  },
 
   rocks = { enabled = false },
   change_detection = {

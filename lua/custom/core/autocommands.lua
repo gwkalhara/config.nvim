@@ -18,11 +18,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "q", ":close<CR>", { buffer = ev.buf, silent = true })
   end,
 })
-
--- Enable treesitter highlighting
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = require("nvim-treesitter").get_installed(),
-  callback = function(ev)
-    vim.treesitter.start(ev.buf)
-  end,
-})

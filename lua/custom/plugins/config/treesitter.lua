@@ -28,6 +28,14 @@ Treesitter.config = function(_, opts)
   --     vim.treesitter.stop()
   --   end,
   -- })
+
+  -- Enable treesitter highlighting
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = require("nvim-treesitter").get_installed(),
+    callback = function(ev)
+      vim.treesitter.start(ev.buf)
+    end,
+  })
 end
 
 return Treesitter

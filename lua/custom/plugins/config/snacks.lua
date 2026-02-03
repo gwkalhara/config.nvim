@@ -14,6 +14,7 @@ Snks.opts = {
   statuscolumn = {
     enabled = true,
     folds = { open = true },
+    right = { "git", "fold" },
     git = {
       patterns = { "MiniDiffSign", "GitSign" },
     },

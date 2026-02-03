@@ -261,6 +261,24 @@ M.plugins = {
     keys = require("custom.plugins.config.obsidian").keys,
     opts = require("custom.plugins.config.obsidian").opts,
   },
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    version = "*",
+    opts = {
+      preview = {
+        icon_provider = "devicons",
+      },
+      markdown = {
+        code_blocks = {
+          label_direction = "left",
+        },
+        list_items = {
+          shift_width = 2,
+        },
+      },
+    },
+  },
   require("custom.plugins.config.latex").spec,
 
   require("custom.plugins.dev").custom,

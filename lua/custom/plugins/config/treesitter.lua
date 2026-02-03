@@ -20,7 +20,7 @@ Treesitter.config = function(_, opts)
     "git_rebase",
   }
   require("nvim-treesitter").setup(opts)
-  -- require("nvim-treesitter").install(parsers, { max_jobs = 3 })
+  require("nvim-treesitter").install(parsers, { max_jobs = 3 })
 
   -- vim.api.nvim_create_autocmd("FileType", {
   --   pattern = { "tex", "latex" },

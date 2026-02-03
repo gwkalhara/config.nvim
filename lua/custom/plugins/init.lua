@@ -177,9 +177,7 @@ M.plugins = {
     opts = require("custom.plugins.config.conform").opts,
   },
   {
-    -- WARN: This is a temporary fix for the ssl certificate issue
-    "gwkalhara/nvim-treesitter",
-    branch = "ssl-fix",
+    "nvim-treesitter/nvim-treesitter",
     lazy = false,
     build = ":TSUpdate",
     config = require("custom.plugins.config.treesitter").config,
@@ -213,8 +211,7 @@ M.plugins = {
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
 
-      -- WARN: This is a temporary patch to work around the curl ssl certificate issue
-      "gwkalhara/nvim-treesitter",
+      "nvim-treesitter/nvim-treesitter",
     },
     opts = {},
     -- event = { "CmdlineEnter" },

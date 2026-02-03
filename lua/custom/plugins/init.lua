@@ -279,6 +279,13 @@ M.plugins = {
       },
     },
   },
+  {
+    "2KAbhishek/nerdy.nvim",
+    cmd = "Nerdy",
+    opts = {
+      max_recents = 10,
+    },
+  },
   require("custom.plugins.config.latex").spec,
 
   require("custom.plugins.dev").custom,

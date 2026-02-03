@@ -14,6 +14,7 @@ Obsidian.dependencies = {
 }
 Obsidian.opts = {
   -- templates = { folder = "templates", date_format = "%Y-%m-%d-%a", time_format = "%H:%M", },
+  legacy_commands = false,
   workspaces = {
     {
       name = "code",
@@ -28,21 +29,6 @@ Obsidian.opts = {
     enable = false,
     checkboxex = {
       ["-"] = { char = "󰰱", hl_group = "ObsidianTilde" },
-    },
-  },
-  mappings = {
-    ["gl"] = {
-      action = function()
-        return require("obsidian").util.gf_passthrough()
-      end,
-      opts = { noremap = false, expr = true, buffer = true },
-    },
-    -- Smart action depending on context, either follow link or toggle checkbox.
-    ["<cr>"] = {
-      action = function()
-        return require("obsidian").util.smart_action()
-      end,
-      opts = { buffer = true, expr = true },
     },
   },
   statusline = {

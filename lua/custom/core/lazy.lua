@@ -27,7 +27,11 @@ require("lazy").setup({
     end,
     notify = false,
   },
-
+  git = {
+    throttle = {
+      enabled = true,
+    },
+  },
   rocks = { enabled = false },
   change_detection = {
     enabled = true,

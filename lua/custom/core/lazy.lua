@@ -28,6 +28,7 @@ require("lazy").setup({
       enabled = true,
     },
   },
+  dev = { path = vim.fn.stdpath("config") .. "/dev/plugins" },
   rocks = { enabled = false },
   change_detection = {
     enabled = true,

@@ -197,6 +197,7 @@ M.plugins = {
   --   opts = {},
   -- },
   { dir = "~/Desktop/Code/Langs/Lua/Plugins/fixes/gitignore.nvim" },
+  { dir = "~/AppData/Local/nvim/dev/plugins/scaffolding.nvim", opts = {} },
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",

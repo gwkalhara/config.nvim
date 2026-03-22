@@ -31,9 +31,6 @@ Obsidian.opts = {
       ["-"] = { char = "󰰱", hl_group = "ObsidianTilde" },
     },
   },
-  statusline = {
-    format = "{{backlinks}} backlinks",
-  },
 }
 
 return Obsidian

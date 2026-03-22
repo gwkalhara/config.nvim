@@ -41,7 +41,6 @@ Lualine.opts = {
       },
     },
     lualine_x = {
-      "g:obsidian",
 
       -- {
       --   require("noice").api.status.command.get,

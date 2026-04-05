@@ -1,11 +1,5 @@
-local Noice = {}
-
-Noice.opts = {
-  commands = {
-    history = {
-      view = "popup",
-    },
-  },
+require("noice").setup({
+  commands = { history = { view = "popup" } },
   cmdline = {
     format = {
       search_down = {
@@ -16,9 +10,7 @@ Noice.opts = {
       },
     },
   },
-  notify = {
-    view = "notify",
-  },
+  notify = { view = "notify" },
   lsp = {
     -- INFO: Disabled since this functionality is provided by fidget.nvim
     progress = { enabled = false },
@@ -67,24 +59,18 @@ Noice.opts = {
     },
   },
   routes = {},
-}
+})
 
-Noice.config = function(_, opts)
-  require("noice").setup(opts)
-  -- require("telescope").load_extension("noice")
+-- LSP hover doc scrolling
+vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
+  if not require("noice.lsp").scroll(4) then
+    return "<c-f>"
+  end
+end, { silent = true, expr = true })
 
-  -- LSP hover doc scrolling
-  vim.keymap.set({ "n", "i", "s" }, "<c-f>", function()
-    if not require("noice.lsp").scroll(4) then
-      return "<c-f>"
-    end
-  end, { silent = true, expr = true })
+vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
+  if not require("noice.lsp").scroll(-4) then
+    return "<c-b>"
+  end
+end, { silent = true, expr = true })
 
-  vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
-    if not require("noice.lsp").scroll(-4) then
-      return "<c-b>"
-    end
-  end, { silent = true, expr = true })
-end
-
-return Noice

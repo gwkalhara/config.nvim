@@ -1,39 +1,84 @@
-local options = {
-  backup = false, -- creates a backup file
-  -- INFO: special behaviour will be implemented when using  `obsidian.nvim`
-  conceallevel = 0, -- so that `` is visible in markdown files
-  fileencoding = "utf-8", -- the encoding written to a file
-  spelllang = "en_us",
-  hlsearch = true, -- highlight all matches on previous search pattern
-  ignorecase = true, -- ignore case in search patterns
-  smartcase = true, -- smart case
-  mouse = "", -- disable mouse
-  showmode = false, -- we don't need to see things like -- INSERT -- anymore
-  smartindent = true, -- make indenting smarter again
-  splitbelow = true, -- force all horizontal splits to go below current window
-  splitright = true, -- force all vertical splits to go to the right of current window
-  swapfile = false, -- creates a swapfile
-  timeoutlen = 500, -- time to wait for a mapped sequence to complete (in milliseconds)
-  undofile = true, -- enable persistent undo
-  updatetime = 300, -- faster completion (4000ms default)
-  writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
-  expandtab = true, -- convert tabs to spaces
-  shiftwidth = 2, -- the number of spaces inserted for each indentation
-  tabstop = 2, -- insert 2 spaces for a tab
-  cursorline = true, -- highlight the current line
-  number = true, -- set numbered lines
-  relativenumber = true, -- set relative numbered lines
-  numberwidth = 4, -- set number column width to 2 {default 4}
-  signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
-  wrap = false, -- display lines as one long line
-  scrolloff = 8, -- is one of my fav
-  sidescrolloff = 8,
-  guifont = "CaskaydiaCove NF:h17", -- the font used in graphical neovim applications
-  winbar = "%t %m {%L} | %F",
-  foldmethod = "expr",
-  foldexpr = "v:lua.vim.treesitter.foldexpr()",
-  foldlevel = 99,
-}
+vim.opt.termguicolors = true
+vim.cmd.colorscheme("catppuccin")
+
+vim.opt.mouse = ""
+vim.opt.number = true -- line number
+vim.opt.relativenumber = true -- relative line numbers
+vim.opt.cursorline = true -- highlight current line
+vim.opt.wrap = false -- do not wrap lines by default
+vim.opt.scrolloff = 10 -- keep 10 lines above/below cursor
+vim.opt.sidescrolloff = 10 -- keep 10 lines to left/right of cursor
+vim.opt.winbar = "%t %m {%L} | %F"
+
+vim.opt.tabstop = 2 -- tabwidth
+vim.opt.shiftwidth = 2 -- indent width
+vim.opt.softtabstop = 2 -- soft tab stop not tabs on tab/backspace
+vim.opt.expandtab = true -- use spaces instead of tabs
+vim.opt.smartindent = true -- smart auto-indent
+vim.opt.autoindent = true -- copy indent from current line
+
+vim.opt.ignorecase = true -- case insensitive search
+vim.opt.smartcase = true -- case sensitive if uppercase in string
+vim.opt.hlsearch = true -- highlight search matches
+vim.opt.incsearch = true -- show matches as you type
+vim.opt.spelllang = "en_us" -- use the us english for spell checking
+
+vim.opt.signcolumn = "yes" -- always show a sign column
+vim.opt.colorcolumn = "100" -- show a column at 100 position chars
+vim.opt.showmatch = true -- highlights matching brackets
+vim.opt.cmdheight = 1 -- single line command line
+vim.opt.completeopt = "menuone,noinsert,noselect" -- completion options
+vim.opt.showmode = false -- do not show the mode, instead have it in statusline
+vim.opt.pumheight = 10 -- popup menu height
+vim.opt.pumblend = 10 -- popup menu transparency
+vim.opt.winblend = 0 -- floating window transparency
+vim.opt.conceallevel = 0 -- do not hide markup
+vim.opt.concealcursor = "" -- do not hide cursorline in markup
+vim.opt.lazyredraw = false -- do not redraw during macros
+vim.opt.synmaxcol = 300 -- syntax highlighting limit
+vim.opt.fillchars = { eob = " " } -- hide "~" on empty lines
+
+local undodir = vim.fn.expand("~/.vim/undodir")
+if
+  vim.fn.isdirectory(undodir) == 0 -- create undodir if nonexistent
+then
+  vim.fn.mkdir(undodir, "p")
+end
+
+vim.opt.backup = false -- do not create a backup file
+vim.opt.writebackup = false -- do not write to a backup file
+vim.opt.swapfile = false -- do not create a swapfile
+vim.opt.undofile = true -- do create an undo file
+vim.opt.undodir = undodir -- set the undo directory
+vim.opt.updatetime = 300 -- faster completion
+vim.opt.timeoutlen = 500 -- timeout duration
+vim.opt.ttimeoutlen = 0 -- key code timeout
+vim.opt.autoread = true -- auto-reload changes if outside of neovim
+vim.opt.autowrite = false -- do not auto-save
+
+vim.opt.hidden = true -- allow hidden buffers
+vim.opt.errorbells = false -- no error sounds
+vim.opt.backspace = "indent,eol,start" -- better backspace behaviour
+vim.opt.autochdir = false -- do not autochange directories
+vim.opt.iskeyword:append("-") -- include - in words
+vim.opt.path:append("**") -- include subdirs in search
+vim.opt.selection = "inclusive" -- include last char in selection
+vim.opt.modifiable = true -- allow buffer modifications
+vim.opt.encoding = "utf-8" -- set encoding
+
+-- Folding: requires treesitter available at runtime; safe fallback if not
+vim.opt.foldmethod = "expr" -- use expression for folding
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- use treesitter for folding
+vim.opt.foldlevel = 99 -- start with all folds open
+
+vim.opt.splitbelow = true -- horizontal splits go below
+vim.opt.splitright = true -- vertical splits go right
+
+vim.opt.wildmenu = true -- tab completion
+vim.opt.wildmode = "longest:full,full" -- complete longest common match, full completion list, cycle through with Tab
+vim.opt.diffopt:append("linematch:60") -- improve diff display
+vim.opt.redrawtime = 10000 -- increase neovim redraw tolerance
+vim.opt.maxmempattern = 20000 -- increase max memory
 
 -- INFO: Config shown in helpdocs to use Powershell as terminal shell
 vim.cmd([[let &shell = executable('pwsh') ? 'pwsh' : 'powershell']])
@@ -44,33 +89,51 @@ vim.cmd([[let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode
 vim.cmd([[let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode']])
 vim.cmd([[set shellquote= shellxquote=]])
 
-vim.opt.shortmess:append("c")
+-- language providers
+vim.g.python3_host_prog = vim.fn.expand("~/.venv/neovim/bin/Scripts/python.exe")
 
-for k, v in pairs(options) do
-  vim.opt[k] = v
-end
+-- ============================================================================
+-- AUTOCMDS
+-- ============================================================================
 
--- white spaces display
--- works together with the `CcmdToggleWhitespace` command
-vim.opt.list = false
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+local augroup = vim.api.nvim_create_augroup("UserConfig", { clear = true })
 
-vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
+-- highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup,
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
 
-vim.g.python3_host_prog = "C:/Users/Hp/.venvs/nvim/Scripts/python.exe"
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
+-- return to last cursor position
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = augroup,
+  desc = "Restore last cursor position",
+  callback = function()
+    if vim.o.diff then -- except in diff mode
+      return
+    end
 
-vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[set iskeyword+=-]])
-vim.cmd([[set formatoptions-=cro]])
+    local last_pos = vim.api.nvim_buf_get_mark(0, '"') -- {line, col}
+    local last_line = vim.api.nvim_buf_line_count(0)
 
--- INFO: custom commands
-vim.api.nvim_create_user_command("CCmdFormatBuffer", function()
-  require("conform").format()
-end, { desc = "Format buffer with conform" })
+    local row = last_pos[1]
+    if row < 1 or row > last_line then
+      return
+    end
 
-vim.api.nvim_create_user_command("CcmdToggleWhitespace", function()
-  ---@diagnostic disable-next-line: undefined-field
-  vim.opt.list = not vim.opt.list:get()
-end, {})
+    pcall(vim.api.nvim_win_set_cursor, 0, last_pos)
+  end,
+})
+
+-- wrap, linebreak and spellcheck on markdown and text files
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup,
+  pattern = { "markdown", "text", "gitcommit" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.spell = true
+  end,
+})

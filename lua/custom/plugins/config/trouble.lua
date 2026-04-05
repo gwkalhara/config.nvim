@@ -1,6 +1,4 @@
-local Trouble = {}
-
-Trouble.opts = {
+require("trouble").setup({
   modes = {
     diagnostics = {
       focus = true,
@@ -48,14 +46,26 @@ Trouble.opts = {
       },
     },
   },
-}
--- stylua: ignore
-Trouble.keys = {
-  { "<leader>xr", "<cmd>Trouble lsp_references toggle<cr>", desc = "LSP [R]eferences (Trouble)", },
-  { "<leader>xd", "<cmd>Trouble diagnostics toggle focues=false<cr>", desc = "[D]iagnostics (Trouble)", },
-  { "<leader>xs", "<cmd>Trouble lsp_document_symbols toggle focus=true<cr>", desc = "Code [S]ymbols (Trouble)", },
-  { "<leader>xL", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "[L]SP Definitions / references / ... (Trouble)", },
-  { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "[Q]uickfix List (Trouble)", },
-}
+})
 
-return Trouble
+vim.keymap.set("n", "<leader>xr", "<cmd>Trouble lsp_references toggle<cr>", { desc = "LSP [R]eferences (Trouble)" })
+vim.keymap.set(
+  "n",
+  "<leader>xd",
+  "<cmd>Trouble diagnostics toggle focues=false<cr>",
+  { desc = "[D]iagnostics (Trouble)" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>xs",
+  "<cmd>Trouble lsp_document_symbols toggle focus=true<cr>",
+  { desc = "Code [S]ymbols (Trouble)" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>xL",
+  "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+  { desc = "[L]SP Definitions / references / ... (Trouble)" }
+)
+vim.keymap.set("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>", { desc = "[Q]uickfix List (Trouble)" })
+

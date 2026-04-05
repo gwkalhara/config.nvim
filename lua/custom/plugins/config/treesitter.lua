@@ -1,41 +1,36 @@
-local Treesitter = {}
+local parsers = {
+  "python",
+  "go",
+  "lua",
 
-Treesitter.config = function(_, opts)
-  local parsers = {
-    "python",
-    "go",
-    "lua",
+  "markdown",
+  "markdown_inline",
+  "html",
+  "latex",
+  "typst",
+  "yaml",
 
-    "markdown",
-    "markdown_inline",
-    "html",
-    "latex",
-    "typst",
-    "yaml",
+  "json",
+  "toml",
 
-    "json",
-    "toml",
+  -- "gitcommit",
+  "git_rebase",
+}
 
-    "gitcommit",
-    "git_rebase",
-  }
-  require("nvim-treesitter").setup(opts)
-  require("nvim-treesitter").install(parsers, { max_jobs = 3 })
+require("nvim-treesitter").setup(opts)
+require("nvim-treesitter").install(parsers, { max_jobs = 3 })
 
-  -- vim.api.nvim_create_autocmd("FileType", {
-  --   pattern = { "tex", "latex" },
-  --   callback = function()
-  --     vim.treesitter.stop()
-  --   end,
-  -- })
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = { "tex", "latex" },
+--   callback = function()
+--     vim.treesitter.stop()
+--   end,
+-- })
 
-  -- Enable treesitter highlighting
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = require("nvim-treesitter").get_installed(),
-    callback = function(ev)
-      vim.treesitter.start(ev.buf)
-    end,
-  })
-end
-
-return Treesitter
+-- Enable treesitter highlighting
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = require("nvim-treesitter").get_installed(),
+  callback = function(ev)
+    vim.treesitter.start(ev.buf)
+  end,
+})

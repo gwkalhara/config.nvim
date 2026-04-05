@@ -1,492 +1,329 @@
-local Lsp = {}
+require("mason").setup()
+require("fidget").setup()
 
-Lsp.spec = {
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-      },
+--=====================================================
+-- builtin lsp progress
+--=====================================================
+-- require('vim._core.ui2').enable({
+--   enable = true, -- Whether to enable or disable the UI.
+--   msg = { -- Options related to the message module.
+--     ---@type 'cmd'|'msg' Default message target, either in the
+--     ---cmdline or in a separate ephemeral message window.
+--     ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
+--     ---or table mapping |ui-messages| kinds and triggers to a target.
+--     targets = 'cmd',
+--     cmd = { -- Options related to messages in the cmdline window.
+--       height = 0.5 -- Maximum height while expanded for messages beyond 'cmdheight'.
+--     },
+--     dialog = { -- Options related to dialog window.
+--       height = 0.5, -- Maximum height.
+--     },
+--     msg = { -- Options related to msg window.
+--       height = 0.5, -- Maximum height.
+--       timeout = 4000, -- Time a message is visible in the message window.
+--     },
+--     pager = { -- Options related to message window.
+--       height = 1, -- Maximum height.
+--     },
+--   },
+-- })
+--
+-- vim.api.nvim_create_autocmd("LspProgress", {
+--   callback = function (ev)
+--     local value = ev.data.params.value
+--
+--     vim.api.nvim_echo({{value.message or "done"}}, false, {
+--       id = "lsp." .. ev.data.client_id,
+--       kind = "progress",
+--       source = "vim.lsp",
+--       title = value.title,
+--       status = value.kind ~= "end" and "running" or "success",
+--       percent = value.percentage,
+--     })
+--   end
+-- })
+--
+-- Although this works, it blocks the cmd bar
+-- so for the time being,will continue to use fidget
+--=====================================================
+
+local diagnostic_signs = {
+  Error = " ",
+  Warn = " ",
+  Hint = "",
+  Info = "",
+}
+
+vim.diagnostic.config({
+  virtual_text = { prefix = "●", spacing = 4 },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = diagnostic_signs.Error,
+      [vim.diagnostic.severity.WARN] = diagnostic_signs.Warn,
+      [vim.diagnostic.severity.INFO] = diagnostic_signs.Info,
+      [vim.diagnostic.severity.HINT] = diagnostic_signs.Hint,
     },
   },
-  {
-    "saghen/blink.cmp",
-    dependencies = {
-      "onsails/lspkind.nvim",
-      {
-        "L3MON4D3/LuaSnip",
-        lazy = true,
-        build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
-          if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-            return
-          end
-          return "make install_jsregexp"
-        end)(),
-        dependencies = {
-          {
-            "rafamadriz/friendly-snippets",
-            config = function()
-              require("luasnip.loaders.from_vscode").lazy_load()
-            end,
-          },
-        },
-        config = function()
-          require("custom.plugins.config.snippets").load_custom_snippets()
-          require("luasnip.loaders.from_snipmate").load({
-            paths = vim.fn.stdpath("config") .. "\\snippets\\tex.snippets",
-          })
-
-          -- INFO: Snippet mappings
-          vim.keymap.set({ "i", "s" }, "<C-L>", function()
-            require("luasnip").jump(1)
-          end, { silent = true })
-          vim.keymap.set({ "i", "s" }, "<C-J>", function()
-            require("luasnip").jump(-1)
-          end, { silent = true })
-        end,
-      },
-    },
-    version = "1.*",
-    ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
-    opts = {
-      keymap = {
-        preset = "super-tab",
-
-        ["<Tab>"] = { "accept", "fallback" },
-      },
-      snippets = { preset = "luasnip" },
-      appearance = { nerd_font_variant = "mono" },
-
-      -- (Default) Only show the documentation popup when manually triggered
-      completion = {
-        documentation = { auto_show = true },
-        menu = {
-          draw = {
-            components = {
-              kind_icon = {
-                text = function(ctx)
-                  local icon = ctx.kind_icon
-                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                    if dev_icon then
-                      icon = dev_icon
-                    end
-                  else
-                    -- icon = require("lspkind").symbolic(ctx.kind, { mode = "symbol" })
-                    icon = require("lspkind").symbolic(ctx.kind)
-                  end
-                  return icon .. ctx.icon_gap
-                end,
-                -- Optionally, use the highlight groups from nvim-web-devicons
-                -- You can also add the same function for `kind.highlight` if you want to
-                -- keep the highlight groups in sync with the icons.
-                highlight = function(ctx)
-                  local hl = ctx.kind_hl
-                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                    if dev_icon then
-                      hl = dev_hl
-                    end
-                  end
-                  return hl
-                end,
-              },
-            },
-          },
-        },
-      },
-
-      -- Default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, due to `opts_extend`
-      sources = {
-        default = { "lazydev", "lsp", "snippets", "path", "buffer" },
-        providers = {
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            score_offset = 100,
-          },
-        },
-      },
-      fuzzy = { implementation = "lua" },
-    },
-    opts_extend = { "sources.default" },
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+    focusable = false,
+    style = "minimal",
   },
-  {
-    "mason-org/mason.nvim",
-    version = "*",
-    opts = {
-      max_concurrent_installers = 2,
-    },
-    dependencies = {
-      {
-        "mason-org/mason-lspconfig.nvim",
-        version = "*",
-        dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-      },
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
+})
 
-      -- Useful status updates for LSP.
-      { "j-hui/fidget.nvim", opts = {} },
-      {
-        "TheLeoP/powershell.nvim",
-        opts = {
-          bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services",
-        },
-      },
+local function lsp_on_attach(ev)
+  local client = vim.lsp.get_client_by_id(ev.data.client_id)
+  if not client then
+    return
+  end
 
-      "ray-x/go.nvim", -- required to get the `gopls` server settings
-    },
-    config = function(_, opts)
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc, mode)
-            mode = mode or "n"
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-          end
+  -- local bufnr = ev.buf
+  -- local opts = { noremap = true, silent = true, buffer = bufnr }
 
-          -- INFO: These mappings are taken from `kickstart.nvim`
-          -- need to replace them if necessary.
+  local map = function(keys, func, desc, mode)
+    mode = mode or "n"
+    vim.keymap.set(mode, keys, func, { noremap = true, silent = true, buffer = ev.buf, desc = "LSP: " .. desc })
+  end
 
-          map("K", vim.lsp.buf.hover, "[H]over docs")
-          map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
+  map("K", vim.lsp.buf.hover, "[H]over docs")
+  map("<C-k>", vim.lsp.buf.signature_help, "Signature help", "i")
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          -- map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-          map("gd", Snacks.picker.lsp_definitions, "[G]oto [D]efinition")
+  -- Jump to the definition of the word under your cursor.
+  --  This is where a variable was first declared, or where a function is defined, etc.
+  --  To jump back, press <C-t>.
+  -- map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+  map("gd", Snacks.picker.lsp_definitions, "[G]oto [D]efinition")
 
-          -- Find references for the word under your cursor.
-          -- map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-          map("gr", Snacks.picker.lsp_references, "[G]oto [R]eferences")
+  -- Find references for the word under your cursor.
+  -- map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+  map("gr", Snacks.picker.lsp_references, "[G]oto [R]eferences")
 
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map("gI", Snacks.picker.lsp_implementations, "[G]oto [I]mplementation")
-          -- map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-          -- map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+  -- Jump to the implementation of the word under your cursor.
+  --  Useful when your language has ways of declaring types without an actual implementation.
+  map("gI", Snacks.picker.lsp_implementations, "[G]oto [I]mplementation")
+  -- map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+  -- map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
 
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          -- map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-          -- map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
-          map("gy", Snacks.picker.lsp_type_definitions, "[G]oto [T]ype Definition")
+  -- Jump to the type of the word under your cursor.
+  --  Useful when you're not sure what type a variable is and you want to see
+  --  the definition of its *type*, not where it was *defined*.
+  -- map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+  -- map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+  map("gy", Snacks.picker.lsp_type_definitions, "[G]oto [T]ype Definition")
 
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map("<leader>ds", Snacks.picker.lsp_symbols, "[D]ocument [S]ymbols")
+  -- Fuzzy find all the symbols in your current document.
+  --  Symbols are things like variables, functions, types, etc.
+  map("<leader>ds", Snacks.picker.lsp_symbols, "[D]ocument [S]ymbols")
 
-          -- TODO: Workspaces doesn't seem to work properly, might have to remove this mapping
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map("<leader>ws", Snacks.picker.lsp_workspace_symbols, "[W]orkspace [S]ymbols")
-          map("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd folder")
-          map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove folder")
-          map("<leader>wl", function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, "[W]orkspace [L]ist folders")
+  -- TODO: Workspaces doesn't seem to work properly, might have to remove this mapping
+  -- Fuzzy find all the symbols in your current workspace.
+  --  Similar to document symbols, except searches over your entire project.
+  map("<leader>ws", Snacks.picker.lsp_workspace_symbols, "[W]orkspace [S]ymbols")
+  map("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd folder")
+  map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove folder")
+  map("<leader>wl", function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, "[W]orkspace [L]ist folders")
 
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
+  -- Rename the variable under your cursor.
+  --  Most Language Servers support renaming across files, etc.
+  map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
 
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+  -- Execute a code action, usually your cursor needs to be on top of an error
+  -- or a suggestion from your LSP for this to activate.
+  map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
-          --  This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
-          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+  --  This is not Goto Definition, this is Goto Declaration.
+  --  For example, in C this would take you to the header.
+  map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
-          --    See `:help CursorHold` for information about when this is executed
-          --
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
-            })
+  -- The following two autocommands are used to highlight references of the
+  -- word under your cursor when your cursor rests there for a little while.
+  --    See `:help CursorHold` for information about when this is executed
+  --
+  -- When you move your cursor, the highlights will be cleared (the second autocommand).
+  if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+    local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      buffer = ev.buf,
+      group = highlight_augroup,
+      callback = vim.lsp.buf.document_highlight,
+    })
 
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
-            })
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      buffer = ev.buf,
+      group = highlight_augroup,
+      callback = vim.lsp.buf.clear_references,
+    })
 
-            vim.api.nvim_create_autocmd("LspDetach", {
-              group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds({
-                  group = "kickstart-lsp-highlight",
-                  buffer = event2.buf,
-                })
-              end,
-            })
-          end
+    -- cleanup after lsp detach
+    vim.api.nvim_create_autocmd("LspDetach", {
+      group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+      callback = function(event2)
+        vim.lsp.buf.clear_references()
+        vim.api.nvim_clear_autocmds({
+          group = "kickstart-lsp-highlight",
+          buffer = event2.buf,
+        })
+      end,
+    })
 
-          -- The following code creates a keymap to toggle inlay hints in your
-          -- code, if the language server you are using supports them
-          --
-          -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map("<leader>th", function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-            end, "[T]oggle Inlay [H]ints")
-          end
-        end,
-      })
+    -- The following code creates a keymap to toggle inlay hints in your
+    -- code, if the language server you are using supports them
+    --
+    -- This may be unwanted, since they displace some of your code
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+      map("<leader>th", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }))
+      end, "[T]oggle Inlay [H]ints")
+    end
+  end
+end
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspAtach", { clear = true }),
+  callback = lsp_on_attach,
+})
 
-      local signs = { ERROR = "", WARN = "", INFO = "", HINT = "" }
+-- luasnip configuration
+require("luasnip.loaders.from_vscode").lazy_load()
+-- INFO: Snippet mappings
+vim.keymap.set({ "i", "s" }, "<C-L>", function()
+  require("luasnip").jump(1)
+end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-J>", function()
+  require("luasnip").jump(-1)
+end, { silent = true })
 
-      -- BUG: This part doesn't seem to work
-      local diagnostic_signs = {}
-      for type, icon in pairs(signs) do
-        diagnostic_signs[vim.diagnostic.severity[type]] = icon
-      end
-      vim.diagnostic.config({ signs = { text = diagnostic_signs } })
-
-      -- BUG: This isn't working either
-      -- -INFO: Taken from my original config
-      -- for type, icon in pairs(signs) do
-      --   local hl = "DiagnosticSign" .. type
-      --   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      -- end
-
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
-
-      -- INFO: Special setup for gopls
-      -- `go.nvim` overides mappings when running on_attach functions
-      -- the fields have to be seperately passed
-      local _, gopls_config = pcall(require("go.lsp").config)
-      if gopls_config == nil then
-        gopls_config = {
-          cmd = { "gopls" },
-          filetypes = { "go", "gomod", "gowork", "gotmpl" },
-          -- root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
-          settings = {
-            gopls = {
-              completeUnimported = true,
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-              },
-            },
-          },
-        }
-      else
-        gopls_config = {
-          capabilities = gopls_config.capabilities,
-          cmd = gopls_config.cmd,
-          filetypes = gopls_config.filetypes,
-          flags = gopls_config.flags,
-          handlers = gopls_config.handlers,
-          message_level = gopls_config.message_level,
-          settings = gopls_config.settings,
-          -- root_dir = require("lspconfig").util.root_pattern("go.work", "go.mod", ".git"),
-        }
-      end
-
-      --- Servers {{{
-      local servers = {
-        -- Lua {{{
-        lua_ls = {
-          cmd = { "lua-language-server" },
-          root_markers = {
-            ".luarc.json",
-            ".luarc.jsonc",
-            ".luacheckrc",
-            ".stylua.toml",
-            "stylua.toml",
-            "selene.toml",
-            "selene.yml",
-            ".git",
-            ---@diagnostic disable-next-line undefined-field
-            vim.uv.cwd(), -- equivalent of `single_file_mode` in lspconfig
-          },
-          filetypes = { "lua" },
-          on_init = function(client)
-            local path = client.workspace_folders and client.workspace_folders[1].name or "."
-            ---@diagnostic disable-next-line undefined-field
-            if vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc") then
-              return
-            end
-
-            client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-              runtime = {
-                -- Tell the language server which version of Lua you're using
-                -- (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-              },
-              hint = {
-                enable = true,
-              },
-              diagnostics = {
-                globals = { "_G", "vim" },
-              },
-              -- Make the server aware of Neovim runtime files
-              workspace = {
-                preloadFileSize = 500,
-                checkThirdParty = false,
-                -- library = {
-                --   vim.env.VIMRUNTIME
-                -- }
-                -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                library = vim.api.nvim_get_runtime_file("", true),
-              },
-            })
-          end,
-          settings = {
-            Lua = {
-              telemetry = {
-                enable = false,
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-              diagnostics = { disable = { "missing-fields" } },
-            },
-          },
-        },
-        --- }}}
-        --- basedpyright {{{
-        basedpyright = {
-          name = "basedpyright",
-          filetypes = { "python" },
-          cmd = { "basedpyright-langserver", "--stdio" },
-          settings = {
-            basedpyright = {
-              disableOrganizeImports = true,
-              analysis = {
-                autoSearchPaths = true,
-                autoImportCompletions = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "openFilesOnly",
-                typeCheckingMode = "strict",
-                inlayHints = {
-                  variableTypes = true,
-                  callArgumentNames = true,
-                  functionReturnTypes = true,
-                  genericTypes = false,
-                },
-              },
-            },
-          },
-        },
-        --- }}}
-        --- gopls {{{
-        gopls = {
-          cmd = { "gopls" },
-          filetypes = { "go", "gotempl", "gowork", "gomod" },
-          root_markers = { ".git", "go.mod", "go.work", vim.uv.cwd() },
-          settings = {
-            gopls = {
-              completeUnimported = true,
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-              },
-              ["ui.inlayhint.hints"] = {
-                compositeLiteralFields = true,
-                constantValues = true,
-                parameterNames = true,
-                rangeVariableTypes = true,
-              },
-            },
-          },
-        },
-        --- }}}
-        -- HTML {{{
-        -- NOTE: installed with 'npm i -g vscode-langservers-extracted'
-        -- htmlls = {
-        --   name = "html",
-        --   cmd = { "vscode-html-language-server", "--stdio" },
-        --   root_markers = { "package.json", ".git" },
-        --   filetypes = { "html", "templ" },
-        --   init_options = {
-        --     configurationSection = { "html", "css", "javascript" },
-        --     embeddedLanguages = {
-        --       css = true,
-        --       javascript = true,
-        --     },
-        --     provideFormatter = true,
-        --   },
-        -- },
-        -- }}}
-        --- emmet_ls {{{
-        emmet_ls = {
-          init_options = { html = { options = { ["bem.enabled"] = true } } },
-          filetypes = {
-            "css",
-            "eruby",
-            "html",
-            "htmldjango",
-            "javascript",
-            "javascriptreact",
-            "less",
-            "sass",
-            "scss",
-            "svelte",
-            "pug",
-            "typescriptreact",
-            "vue",
-          },
-        },
-        --- }}}
-        ruff = { filetypes = { "python" } },
-        ts_ls = {},
-        texlab = {},
-        spectral = {},
-      }
-      --- }}}
-      require("mason").setup(opts)
-
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        -- INFO: additional tooling
-        "stylua",
-        "black",
-        "isort",
-        "prettier",
-        "gofumpt",
-        "goimports-reviser",
-        "golines",
-      })
-      -- INFO: install servers
-      require("mason-tool-installer").setup({
-        ensure_installed = ensure_installed,
-        auto_update = true,
-        start_delay = 10000,
-      })
-
-      require("mason-lspconfig").setup({ automatic_enable = true })
-      vim.lsp.config("*", {
-        capabilities = capabilities,
-      })
-
-      local server_names = vim.tbl_keys(servers)
-      -- Iterate over all the server names and add them to the `vim.lsp.config` table.
-      for _, server_name in ipairs(server_names) do
-        vim.lsp.config[server_name] = servers[server_name]
-      end
-
-      vim.lsp.enable(server_names)
+require("blink.cmp").setup({
+  keymap = {
+    preset = "super-tab",
+    ["<Tab>"] = { "accept", "fallback" },
+    ["<C-Space>"] = { "show", "hide" },
+  },
+  -- snippets = {preset = "luasnip"},
+  snippets = {
+    expand = function(snippet)
+      require("luasnip").lsp_expand(snippet)
     end,
   },
+  completion = {
+    documentation = { auto_show = true },
+  },
+  -- sources = {"lsp", "snippets", "path", "buffer" },
+  sources = { default = { "lsp", "path", "buffer" } },
+  fuzzy = { implementation = "lua" },
+})
+
+vim.lsp.config["*"] = {
+  capabilities = require("blink.cmp").get_lsp_capabilities(),
 }
-return Lsp
+
+-- ========================================================
+-- server definitions
+-- ========================================================
+local servers = {
+  ["lua_ls"] = {
+    filetypes = { "lua" },
+    settings = {
+      Lua = {
+        diagnostics = { globals = { "vim", "Snacks" } },
+        telemetry = { enable = false },
+      },
+    },
+  },
+  ["gopls"] = {
+    cmd = { "gopls" },
+    filetypes = { "go", "gotempl", "gowork", "gomod" },
+    root_markers = { ".git", "go.mod", "go.work", vim.uv.cwd() },
+    settings = {
+      gopls = {
+        completeUnimported = true,
+        usePlaceholders = true,
+        analyses = {
+          unusedparams = true,
+        },
+        ["ui.inlayhint.hints"] = {
+          compositeLiteralFields = true,
+          constantValues = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+      },
+    },
+  },
+}
+
+local server_names = vim.tbl_keys(servers)
+-- Iterate over all the server names and add them to the `vim.lsp.config` table.
+for _, server_name in ipairs(server_names) do
+  vim.lsp.config[server_name] = servers[server_name]
+end
+
+vim.lsp.enable(server_names)
+
+-- ==========================================================
+-- efm configuration
+-- ==========================================================
+
+do
+  local stylua = require("efmls-configs.formatters.stylua")
+
+  local languages = {
+    lua = { stylua },
+  }
+
+  vim.lsp.config("efm", {
+    filetypes = vim.tbl_keys(languages),
+    init_options = { documentFormatting = true },
+    settings = {
+      rootMarkers = { ".git/" },
+      languages = languages,
+    },
+  })
+end
+vim.lsp.enable("efm")
+
+local format_augroup = vim.api.nvim_create_augroup("UserAutoFormat", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = format_augroup,
+  pattern = {
+    "*.lua",
+  },
+  callback = function(args)
+    -- avoid formatting non-file buffers (helps prevent weird write prompts)
+    if vim.bo[args.buf].buftype ~= "" then
+      return
+    end
+    if not vim.bo[args.buf].modifiable then
+      return
+    end
+    if vim.api.nvim_buf_get_name(args.buf) == "" then
+      return
+    end
+
+    local has_efm = false
+    for _, c in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+      if c.name == "efm" then
+        has_efm = true
+        break
+      end
+    end
+    if not has_efm then
+      return
+    end
+
+    pcall(vim.lsp.buf.format, {
+      bufnr = args.buf,
+      timeout_ms = 2000,
+      filter = function(c)
+        return c.name == "efm"
+      end,
+    })
+  end,
+})

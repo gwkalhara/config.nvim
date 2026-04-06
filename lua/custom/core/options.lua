@@ -91,6 +91,8 @@ vim.cmd([[set shellquote= shellxquote=]])
 
 -- language providers
 vim.g.python3_host_prog = vim.fn.expand("~/.venv/neovim/bin/Scripts/python.exe")
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 -- ============================================================================
 -- AUTOCMDS

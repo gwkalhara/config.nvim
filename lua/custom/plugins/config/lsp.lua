@@ -206,17 +206,11 @@ require("blink.cmp").setup({
     ["<Tab>"] = { "accept", "fallback" },
     ["<C-Space>"] = { "show", "hide" },
   },
-  -- snippets = {preset = "luasnip"},
-  snippets = {
-    expand = function(snippet)
-      require("luasnip").lsp_expand(snippet)
-    end,
-  },
+  snippets = { preset = "luasnip" },
   completion = {
     documentation = { auto_show = true },
   },
-  -- sources = {"lsp", "snippets", "path", "buffer" },
-  sources = { default = { "lsp", "path", "buffer" } },
+  sources = { default = { "lsp", "snippets", "path", "buffer" } },
   fuzzy = { implementation = "lua" },
 })
 

@@ -237,6 +237,7 @@ local servers = {
     root_markers = { ".git", "go.mod", "go.work", vim.uv.cwd() },
     settings = {
       gopls = {
+        gofumpt = true,
         completeUnimported = true,
         usePlaceholders = true,
         analyses = {
@@ -268,9 +269,11 @@ vim.lsp.enable(server_names)
 
 do
   local stylua = require("efmls-configs.formatters.stylua")
+  -- local gofumt = require("efmls-configs.formatters.gofumpt")
 
   local languages = {
     lua = { stylua },
+    -- go = { gofumt },
   }
 
   vim.lsp.config("efm", {
@@ -289,6 +292,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = format_augroup,
   pattern = {
     "*.lua",
+    -- "*.go",
   },
   callback = function(args)
     -- avoid formatting non-file buffers (helps prevent weird write prompts)

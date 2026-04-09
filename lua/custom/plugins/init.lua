@@ -27,6 +27,8 @@ vim.pack.add({
     src = gh("ThePrimeagen/harpoon"),
     version = "harpoon2",
   },
+
+  gh("lervag/vimtex"),
 })
 
 -- plugin configs
@@ -42,3 +44,4 @@ vim.api.nvim_create_autocmd("VimEnter", {
 require("custom.plugins.config.mini")
 require("custom.plugins.config.snacks")
 require("custom.plugins.config.lsp")
+require("custom.plugins.config.latex")

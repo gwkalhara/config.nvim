@@ -1,26 +1,30 @@
+local gh = function(url_name)
+  return "https://github.com/" .. url_name
+end
+
 vim.pack.add({
-  "https://github.com/nvim-mini/mini.nvim",
-  "https://github.com/nvim-treesitter/nvim-treesitter",
-  "https://github.com/folke/snacks.nvim",
-  "https://github.com/folke/trouble.nvim",
-  "https://github.com/folke/noice.nvim",
-  "https://github.com/MunifTanjim/nui.nvim",
+  gh("nvim-mini/mini.nvim"),
+  gh("nvim-treesitter/nvim-treesitter"),
+  gh("folke/snacks.nvim"),
+  gh("folke/trouble.nvim"),
+  gh("folke/noice.nvim"),
+  gh("MunifTanjim/nui.nvim"),
 
   -- lsp related plugins
-  "https://github.com/neovim/nvim-lspconfig",
-  "https://github.com/mason-org/mason.nvim",
-  "https://github.com/j-hui/fidget.nvim",
-  "https://github.com/creativenull/efmls-configs-nvim",
+  gh("neovim/nvim-lspconfig"),
+  gh("mason-org/mason.nvim"),
+  gh("j-hui/fidget.nvim"),
+  gh("creativenull/efmls-configs-nvim"),
   {
-    src = "https://github.com/saghen/blink.cmp",
+    src = gh("saghen/blink.cmp"),
     version = vim.version.range("1.*"),
   },
-  "https://github.com/L3MON4D3/LuaSnip",
-  "https://github.com/rafamadriz/friendly-snippets",
+  gh("L3MON4D3/LuaSnip"),
+  gh("rafamadriz/friendly-snippets"),
 
-  "https://github.com/nvim-lua/plenary.nvim", -- dependency for harpoon
+  gh("nvim-lua/plenary.nvim"), -- dependency for harpoon
   {
-    src = "https://github.com/ThePrimeagen/harpoon",
+    src = gh("ThePrimeagen/harpoon"),
     version = "harpoon2",
   },
 })

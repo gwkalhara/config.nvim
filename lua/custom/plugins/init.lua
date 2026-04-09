@@ -30,10 +30,15 @@ vim.pack.add({
 })
 
 -- plugin configs
-require("custom.plugins.config.treesitter")
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = vim.api.nvim_create_augroup("UserPluginLoading", { clear = true }),
+  callback = function()
+    require("custom.plugins.config.trouble")
+    require("custom.plugins.config.noice")
+    require("custom.plugins.config.treesitter")
+    require("custom.plugins.config.harpoon")
+  end,
+})
 require("custom.plugins.config.mini")
-require("custom.plugins.config.harpoon")
 require("custom.plugins.config.snacks")
 require("custom.plugins.config.lsp")
-require("custom.plugins.config.trouble")
-require("custom.plugins.config.noice")

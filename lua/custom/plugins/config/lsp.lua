@@ -253,6 +253,8 @@ local servers = {
     },
   },
   ["ty"] = {},
+  ["ltex_plus"] = {},
+  ["texlab"] = {},
 }
 
 local server_names = vim.tbl_keys(servers)

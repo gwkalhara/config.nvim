@@ -21,6 +21,7 @@ vim.pack.add({
   },
   gh("L3MON4D3/LuaSnip"),
   gh("rafamadriz/friendly-snippets"),
+  gh("onsails/lspkind.nvim"),
 
   gh("nvim-lua/plenary.nvim"), -- dependency for harpoon
   {

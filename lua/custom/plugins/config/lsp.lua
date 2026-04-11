@@ -1,6 +1,11 @@
 require("mason").setup()
 -- require("fidget").setup()
 
+require("go").setup({
+  luasnip = true,
+  lsp_keymaps = false,
+})
+
 --=====================================================
 -- builtin lsp progress
 --=====================================================
@@ -257,6 +262,7 @@ vim.lsp.config["*"] = {
 -- ========================================================
 -- server definitions
 -- ========================================================
+
 local servers = {
   ["lua_ls"] = {
     filetypes = { "lua" },
@@ -267,29 +273,11 @@ local servers = {
       },
     },
   },
-  ["gopls"] = {
-    cmd = { "gopls" },
-    filetypes = { "go", "gotempl", "gowork", "gomod" },
-    root_markers = { ".git", "go.mod", "go.work", vim.uv.cwd() },
-    settings = {
-      gopls = {
-        gofumpt = true,
-        completeUnimported = true,
-        usePlaceholders = true,
-        analyses = {
-          unusedparams = true,
-        },
-        ["ui.inlayhint.hints"] = {
-          compositeLiteralFields = true,
-          constantValues = true,
-          parameterNames = true,
-          rangeVariableTypes = true,
-        },
-      },
-    },
-  },
+  ["gopls"] = require("go.lsp").config(),
   ["ty"] = {},
-  ["ltex_plus"] = {},
+  ["ltex_plus"] = {
+    filetypes = { "txt", "tex", "markdown" },
+  },
   ["texlab"] = {},
 }
 
@@ -311,7 +299,6 @@ do
 
   local languages = {
     lua = { stylua },
-    -- go = { gofumt },
   }
 
   vim.lsp.config("efm", {
@@ -330,7 +317,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = format_augroup,
   pattern = {
     "*.lua",
-    -- "*.go",
   },
   callback = function(args)
     -- avoid formatting non-file buffers (helps prevent weird write prompts)
@@ -363,4 +349,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
       end,
     })
   end,
+})
+
+local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    require("go.format").goimports()
+  end,
+  group = format_sync_grp,
 })

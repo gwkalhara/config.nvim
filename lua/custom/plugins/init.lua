@@ -30,6 +30,9 @@ vim.pack.add({
   },
 
   gh("lervag/vimtex"),
+
+  gh("ray-x/go.nvim"),
+  gh("ray-x/guihua.lua"),
 })
 
 -- plugin configs

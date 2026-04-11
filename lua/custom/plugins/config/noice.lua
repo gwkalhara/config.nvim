@@ -12,8 +12,7 @@ require("noice").setup({
   },
   notify = { view = "notify" },
   lsp = {
-    -- INFO: Disabled since this functionality is provided by fidget.nvim
-    progress = { enabled = false },
+    progress = { enabled = true },
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
       ["vim.lsp.util.stylize_markdown"] = true,
@@ -73,4 +72,3 @@ vim.keymap.set({ "n", "i", "s" }, "<c-b>", function()
     return "<c-b>"
   end
 end, { silent = true, expr = true })
-

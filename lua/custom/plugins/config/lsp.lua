@@ -1,5 +1,5 @@
 require("mason").setup()
-require("fidget").setup()
+-- require("fidget").setup()
 
 --=====================================================
 -- builtin lsp progress

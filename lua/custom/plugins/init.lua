@@ -30,6 +30,7 @@ vim.pack.add({
   },
 
   gh("lervag/vimtex"),
+  gh("barreiroleo/ltex_extra.nvim"), -- required for the LTeX lsp
 
   gh("ray-x/go.nvim"),
   gh("ray-x/guihua.lua"),

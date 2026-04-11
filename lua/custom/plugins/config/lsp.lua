@@ -88,6 +88,10 @@ local function lsp_on_attach(ev)
     return
   end
 
+  if client.name == "ltex_plus" then
+    require("ltex_extra").setup()
+  end
+
   -- local bufnr = ev.buf
   -- local opts = { noremap = true, silent = true, buffer = bufnr }
 

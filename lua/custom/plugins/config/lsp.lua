@@ -1,5 +1,4 @@
 require("mason").setup()
--- require("fidget").setup()
 
 require("go").setup({
   luasnip = true,
@@ -49,7 +48,7 @@ require("go").setup({
 -- })
 --
 -- Although this works, it blocks the cmd bar
--- so for the time being,will continue to use fidget
+-- so for the time being,will continue to use noice
 --=====================================================
 
 local diagnostic_signs = {

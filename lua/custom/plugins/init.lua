@@ -13,7 +13,6 @@ vim.pack.add({
   -- lsp related plugins
   gh("neovim/nvim-lspconfig"),
   gh("mason-org/mason.nvim"),
-  gh("j-hui/fidget.nvim"),
   gh("creativenull/efmls-configs-nvim"),
   {
     src = gh("saghen/blink.cmp"),

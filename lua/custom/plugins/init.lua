@@ -33,6 +33,8 @@ vim.pack.add({
 
   gh("ray-x/go.nvim"),
   gh("ray-x/guihua.lua"),
+
+  { src = gh("obsidian-nvim/obsidian.nvim"), version = vim.version.range("*") },
 })
 
 -- plugin configs
@@ -43,6 +45,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     require("custom.plugins.config.noice")
     require("custom.plugins.config.treesitter")
     require("custom.plugins.config.harpoon")
+    require("custom.plugins.config.obsidian")
   end,
 })
 require("custom.plugins.config.mini")

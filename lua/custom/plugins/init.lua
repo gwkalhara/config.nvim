@@ -6,49 +6,55 @@ vim.pack.add({
   gh("nvim-mini/mini.nvim"),
   gh("nvim-treesitter/nvim-treesitter"),
   gh("folke/snacks.nvim"),
-  gh("folke/trouble.nvim"),
-  gh("folke/noice.nvim"),
-  gh("MunifTanjim/nui.nvim"),
-
-  -- lsp related plugins
-  gh("neovim/nvim-lspconfig"),
-  gh("mason-org/mason.nvim"),
-  gh("creativenull/efmls-configs-nvim"),
-  {
-    src = gh("saghen/blink.cmp"),
-    version = vim.version.range("1.*"),
-  },
-  gh("L3MON4D3/LuaSnip"),
-  gh("rafamadriz/friendly-snippets"),
-  gh("onsails/lspkind.nvim"),
-
-  gh("nvim-lua/plenary.nvim"), -- dependency for harpoon
-  {
-    src = gh("ThePrimeagen/harpoon"),
-    version = "harpoon2",
-  },
-
-  gh("lervag/vimtex"),
-  gh("barreiroleo/ltex_extra.nvim"), -- required for the LTeX lsp
-
-  gh("ray-x/go.nvim"),
-  gh("ray-x/guihua.lua"),
-
-  { src = gh("obsidian-nvim/obsidian.nvim"), version = vim.version.range("*") },
 })
+
+vim.schedule(function()
+  vim.pack.add({
+    -- lsp related plugins
+    gh("neovim/nvim-lspconfig"),
+    gh("mason-org/mason.nvim"),
+    gh("creativenull/efmls-configs-nvim"),
+    {
+      src = gh("saghen/blink.cmp"),
+      version = vim.version.range("1.*"),
+    },
+    gh("L3MON4D3/LuaSnip"),
+    gh("rafamadriz/friendly-snippets"),
+    gh("onsails/lspkind.nvim"),
+
+    gh("nvim-lua/plenary.nvim"), -- dependency for harpoon
+    {
+      src = gh("ThePrimeagen/harpoon"),
+      version = "harpoon2",
+    },
+
+    gh("folke/trouble.nvim"),
+    gh("folke/noice.nvim"),
+    gh("MunifTanjim/nui.nvim"),
+
+    gh("lervag/vimtex"),
+    gh("barreiroleo/ltex_extra.nvim"), -- required for the LTeX lsp
+
+    gh("ray-x/go.nvim"),
+    gh("ray-x/guihua.lua"),
+
+    { src = gh("obsidian-nvim/obsidian.nvim"), version = vim.version.range("*") },
+  })
+
+  require("custom.plugins.config.trouble")
+  require("custom.plugins.config.noice")
+  require("custom.plugins.config.latex")
+  require("custom.plugins.config.lsp")
+  require("custom.plugins.config.obsidian")
+  require("custom.plugins.config.harpoon")
+end)
 
 -- plugin configs
 vim.api.nvim_create_autocmd("VimEnter", {
   group = vim.api.nvim_create_augroup("UserPluginLoading", { clear = true }),
   callback = function()
-    require("custom.plugins.config.trouble")
-    require("custom.plugins.config.noice")
     require("custom.plugins.config.treesitter")
-    require("custom.plugins.config.harpoon")
-    require("custom.plugins.config.obsidian")
   end,
 })
 require("custom.plugins.config.mini")
 require("custom.plugins.config.snacks")
-require("custom.plugins.config.lsp")
-require("custom.plugins.config.latex")
